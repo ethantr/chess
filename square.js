@@ -1,3 +1,5 @@
+const BOARD_SIZE = 8;
+
 class Square {
     #piece
     #x
@@ -6,6 +8,10 @@ class Square {
         this.setPiece(piece)
         this.setY(y)
         this.setX(x)
+    }
+
+    isOffBoard(){
+        return this.getX() >= BOARD_SIZE || this.getX() < 0 || this.getY() < 0 || this.getY() >= BOARD_SIZE
     }
 
     getX() {
@@ -25,6 +31,10 @@ class Square {
 
     setPiece(piece) {
         this.#piece = piece;
+    }
+
+    isVacant() {
+        return isNaN(this.getPiece())
     }
 
     getPiece() {
