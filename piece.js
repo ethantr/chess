@@ -122,8 +122,23 @@ class Knight extends Piece {
 
 class Pawn extends Piece {
 
+    #firstMove
+
     constructor(colour) {
         super(colour);
+        this.setFirstMove(true)
+    }
+
+    firstMovePlayed(){
+        return this.#firstMove;
+    }
+
+    playFirstMove(){
+        this.setFirstMove(false);
+    }
+
+    setFirstMove(v){
+        this.#firstMove = v;
     }
 
     canMove(board, start, end) {
@@ -139,6 +154,10 @@ class Pawn extends Piece {
         var x = getDistX(start, end);
         var y = getDistY(start, end);
 
+        // For first move moving two squares
+        if(!this.firstMovePlayed && y ===2 || end.isVacant()){
+            return true;
+        }
         // Check for moving pawn greater than moving distance
         if (y !== 1) {
             return false;

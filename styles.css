@@ -27,21 +27,83 @@ tr:nth-child(even) td:nth-child(odd) {
 td {
     width: 50px;
     height: 50px;
+    transition-duration: 0.2s;
 }
 
 td:hover {
     background: lightblue !important;
 }
 
+.piece:hover {
+    background-color: rgb(74, 195, 255) !important;
+}
+
 .piece {
+    transition-duration: 0.2s;
     width: 50px;
     height: 50px;
 }
 
-.knight-black{
-    background:url("assets/knight-black.png");
-    background-size:cover;
+.knight-black {
+    background: url("assets/knight-black.png");
+    background-size: cover;
 }
+
+.knight-white {
+    background: url("assets/knight-white.png");
+    background-size: cover;
+}
+
+.rook-white {
+    background: url("assets/rook-white.png");
+    background-size: cover;
+}
+
+.rook-black {
+    background: url("assets/rook-black.png");
+    background-size: cover;
+}
+
+.bishop-black {
+    background: url("assets/bishop-black.png");
+    background-size: cover;
+}
+
+.bishop-white {
+    background: url("assets/bishop-white.png");
+    background-size: cover;
+}
+
+.queen-white{
+    background: url("assets/queen-white.png");
+    background-size: cover;  
+}
+
+.queen-black{
+    background: url("assets/queen-black.png");
+    background-size: cover;  
+}
+
+.king-black {
+    background: url("assets/king-black.png");
+    background-size: cover;
+}
+
+.king-white {
+    background: url("assets/king-white.png");
+    background-size: cover;
+}
+
+.pawn-black{
+    background: url("assets/pawn-black.png");
+    background-size: cover;  
+}
+
+.pawn-white{
+    background: url("assets/pawn-white.png");
+    background-size: cover;  
+}
+
 
 .chess-board {
     background-color: var(--chess-background)
