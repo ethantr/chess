@@ -6,3 +6,4 @@ console.log(pos)
 console.log(pos2)
 console.log(pos.getPiece().canMove(1,pos,pos2))
 board = new Board();
+constructGUIBoard(board)
