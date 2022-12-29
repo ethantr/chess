@@ -7,13 +7,18 @@ class Board {
         for (var i = 0; i < BOARD_SIZE; i++) {
             this.#squares[i] = new Array(BOARD_SIZE);
         }
+
         console.log(this.#squares)
         this.resetBoard()
         // this.constructGUIBoard()
     }
 
-    getSquares(){
+    getSquares() {
         return this.#squares;
+    }
+
+    getSquare(x, y) {
+        return this.#squares[y][x];
     }
 
 
@@ -22,12 +27,21 @@ class Board {
     }
 
 
+    cleanBoard() {
+        for (let index = 0; index < this.#squares.length; index++) {
+            for (let j = 0; j < this.#squares.length; j++) {
+                this.#squares[index][j] = new Square(index, j, PLACEHOLDER)
+            }
+        }
+    }
+
+
 
 
     resetBoard() {
         for (let index = 2; index < this.#squares.length; index++) {
             for (let j = 0; j < this.#squares.length; j++) {
-                this.#squares[index][j] = new Square(index, j, NaN)
+                this.#squares[index][j] = new Square(index, j, PLACEHOLDER)
             }
 
         }
@@ -51,7 +65,6 @@ class Board {
             this.placePiece(new Pawn(WHITE), index, 6)
             this.placePiece(new Pawn(BLACK), index, 1)
         }
-        console.log(this.#squares[0][0])
     }
 
     constructGUIBoard() {

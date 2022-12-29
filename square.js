@@ -34,7 +34,7 @@ class Square {
     }
 
     isVacant() {
-        return isNaN(this.getPiece())
+        return this.getPiece() === PLACEHOLDER
     }
 
     getPiece() {

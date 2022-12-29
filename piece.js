@@ -1,5 +1,6 @@
 const WHITE = "WHITE";
 const BLACK = "BLACK"
+const PLACEHOLDER = null;
 
 function getDistX(start, end) {
     return Math.abs(start.getX() - end.getX());
@@ -35,6 +36,9 @@ class Piece {
     }
 
     isSameTeam(piece) {
+        if (piece === PLACEHOLDER){
+            return false;
+        }
         return piece.getColour() === this.getColour()
     }
 
@@ -68,6 +72,7 @@ class King extends Piece {
             return false;
         }
 
+        console.log("Is the end square vacant?", end.isSquareVacant(),end)
         //Check if a piece on the end position is being replaced
         if (!end.isSquareVacant() && this.isSameTeam(end.getPiece())) {
             return false;

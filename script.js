@@ -1,9 +1,13 @@
 
 
-var pos = new Square(1,1,new Queen(WHITE));
-var pos2 = new Square(1,1,new Pawn(WHITE));
-console.log(pos)
-console.log(pos2)
-console.log(pos.getPiece().canMove(1,pos,pos2))
-board = new Board();
-constructGUIBoard(board)
+
+
+
+
+var game = new Game();  
+game.initialise(new Player(BLACK),new Player(WHITE));
+
+gui = new GUIBoard(game.getBoard())
+game.nextTurn()
+console.log(game.playTurn(new Player(BLACK),1,0,2,2));
+gui.constructGUIBoard(gui.board)
