@@ -9,6 +9,7 @@ class Board {
         }
 
         console.log(this.#squares)
+        this.cleanBoard();
         this.resetBoard()
         // this.constructGUIBoard()
     }
@@ -53,11 +54,11 @@ class Board {
         this.placePiece(new Knight(BLACK), 6, 0);
         this.placePiece(new Knight(WHITE), 1, 7);
         this.placePiece(new Knight(WHITE), 6, 7);
-        this.placePiece(new Bishop(BLACK), 2, 0);
+        //this.placePiece(new Bishop(BLACK), 2, 0);
         this.placePiece(new Bishop(BLACK), 5, 0);
         this.placePiece(new Bishop(WHITE), 2, 7);
         this.placePiece(new Bishop(WHITE), 5, 7);
-        this.placePiece(new Queen(BLACK), 3, 0)
+        //this.placePiece(new Queen(BLACK), 3, 0)
         this.placePiece(new Queen(WHITE), 3, 7)
         this.placePiece(new King(BLACK), 4, 0)
         this.placePiece(new King(WHITE), 4, 7)

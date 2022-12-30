@@ -83,10 +83,16 @@ class Game {
         }
 
         // Check for valid move
-        if (!move.pieceToMove().canMove(board, move.getStart(),
+        if (!move.pieceToMove().canMove(this.getBoard(), move.getStart(),
             move.getEnd())) {
             console.error("Cannot move..")
             return false;
+        }
+
+        move.setIsCastle(move.pieceToMove().canMove(this.getBoard(), move.getStart(),
+        move.getEnd()))
+        if(move.isCastleMove()){
+            console.error("needs to castle.")
         }
 
         //kill piece
