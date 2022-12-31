@@ -12,6 +12,7 @@ class Move {
         this.setStartPosition(start)
         this.setEndPosition(end)
         this.setPieceMoved(start.getPiece());
+        this.setIsCastle(false)
     }
 
     setPlayer(player) {

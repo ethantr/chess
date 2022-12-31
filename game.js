@@ -60,6 +60,33 @@ class Game {
         return this.makeMove(move, player);
     }
 
+    makeCastleMove(move){
+        const KING_MOVE_DISTANCE = 2;
+        var king = move.getStart();
+        var rook = move.getEnd();
+
+        move.pieceToMove().setCastled(true);
+
+        var rookPiece = move.getEnd().getPiece()
+
+        this.getBoard().placePiece(PLACEHOLDER,rook.getX(),rook.getY())
+        this.getBoard().placePiece(PLACEHOLDER,king.getX(),king.getY())
+        var distance = king.getX() - rook.getX();
+        if(distance > 0){
+            console.log("RIGHT MOVE")
+            //Perform right moving 
+            this.getBoard().placePiece(move.pieceToMove(),king.getX()-KING_MOVE_DISTANCE,king.getY())
+            this.getBoard().placePiece(rookPiece,king.getX()-KING_MOVE_DISTANCE+1,rook.getY())
+        } else{
+            //perform left moving.
+            console.log("LEFT MOVE")
+            this.getBoard().placePiece(move.pieceToMove(),king.getX()+KING_MOVE_DISTANCE,king.getY())
+            this.getBoard().placePiece(rookPiece,king.getX()-KING_MOVE_DISTANCE+1,rook.getY())
+        }
+
+        return true;
+    }
+
     makeMove(move) {
         console.log(move)
         var player = move.getPlayer();
@@ -89,10 +116,15 @@ class Game {
             return false;
         }
 
-        move.setIsCastle(move.pieceToMove().canMove(this.getBoard(), move.getStart(),
-        move.getEnd()))
+        if(move.pieceToMove().constructor === King){
+            move.setIsCastle(move.pieceToMove().isValidCastle(this.getBoard(),move.getStart(),move.getEnd()))
+        }
         if(move.isCastleMove()){
-            console.error("needs to castle.")
+            console.error("make castle move")
+            this.makeCastleMove(move);
+            this.nextTurn()
+            this.movesPlayed.push(move);
+            return true
         }
 
         //kill piece
