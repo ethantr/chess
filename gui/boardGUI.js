@@ -35,28 +35,27 @@ class GUIBoard {
 
     constructor(board){
         this.board = board
-        this.constructGUIBoard(this.board)
+        this.constructGUIBoard()
     }
 
-    constructGUIBoard(board) {
+    constructGUIBoard() {
         var table = document.getElementById('board');
         table.innerHTML = ""
-        for (let index = 0; index < board.getSquares().length; index++) {
+        for (let y = 0; y < this.board.getSquares().length; y++) {
             //Create a row in the table.
             var board_row_element = document.createElement('tr');
             table.appendChild(board_row_element);
             //Fill in the row with squares
-            for (let j = 0; j < BOARD_SIZE; j++) {
+            for (let x = 0; x < BOARD_SIZE; x++) {
 
                 var data_cell = document.createElement('td');
                 board_row_element.appendChild(data_cell);
                 var square = document.createElement('div');
 
-                let currentSquare = board.getSquares()[index][j];
+                let currentSquare = this.board.getSquares()[y][x];
                 var pieceName = getPieceName(currentSquare.getPiece())
                 // If not a vacant piece, set the square to a piece.
                 if (pieceName !== "null") square.className = "piece " + pieceName;
-                console.log("piece " + getPieceName(currentSquare.getPiece()))
                 data_cell.appendChild(square);
             }
 

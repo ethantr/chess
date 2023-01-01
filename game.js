@@ -46,49 +46,50 @@ class Game {
         this.movesPlayed = [];
     }
 
-    playTurn(player, startX, startY, endX, endY) {
+    playTurn(player, start_X, start_Y, end_X, end_Y) {
 
-        console.log(this.getBoard());
-        // if (isNaN(this.getBoard())) {
-        //     console.error("board does not exist.", this.getBoard());
-        //     return false;
-        // }
-        var startSquare = this.getBoard().getSquare(startX, startY);
-        var endSquare = this.getBoard().getSquare(endX, endY);
-        console.log("Chosen piece ", startSquare, "dest", endSquare)
+        var startSquare = this.getBoard().getSquare(start_X, start_Y);
+        var endSquare = this.getBoard().getSquare(end_X, end_Y)
+        console.warn("Chosen piece ", startSquare, "dest", endSquare)
         var move = new Move(player, startSquare, endSquare);
         return this.makeMove(move, player);
     }
 
-    makeCastleMove(move){
+    makeCastleMove(move) {
         const KING_MOVE_DISTANCE = 2;
         var king = move.getStart();
         var rook = move.getEnd();
-
-        move.pieceToMove().setCastled(true);
-
-        var rookPiece = move.getEnd().getPiece()
-
-        this.getBoard().placePiece(PLACEHOLDER,rook.getX(),rook.getY())
-        this.getBoard().placePiece(PLACEHOLDER,king.getX(),king.getY())
-        var distance = king.getX() - rook.getX();
-        if(distance > 0){
-            console.log("RIGHT MOVE")
-            //Perform right moving 
-            this.getBoard().placePiece(move.pieceToMove(),king.getX()-KING_MOVE_DISTANCE,king.getY())
-            this.getBoard().placePiece(rookPiece,king.getX()-KING_MOVE_DISTANCE+1,rook.getY())
-        } else{
-            //perform left moving.
-            console.log("LEFT MOVE")
-            this.getBoard().placePiece(move.pieceToMove(),king.getX()+KING_MOVE_DISTANCE,king.getY())
-            this.getBoard().placePiece(rookPiece,king.getX()-KING_MOVE_DISTANCE+1,rook.getY())
+        //check if move is a valid castle move
+        if (!move.pieceToMove().isValidCastle(this.getBoard(), king, rook)) {
+            console.error("Not a valid castle move.")
+            return false;
         }
 
+        //Set castled for rook and king.
+        move.pieceToMove().setCastled(true);
+        var rookPiece = move.getEnd().getPiece();
+        rookPiece.playFirstMove();
+
+        //Clear original spaces in the board
+        this.getBoard().placePiece(PLACEHOLDER, rook.getX(), rook.getY())
+        this.getBoard().placePiece(PLACEHOLDER, king.getX(), king.getY())
+
+        //Determine which side rook is on.
+        var distance = king.getX() - rook.getX();
+
+        if (distance > 0) {
+            // Rook on right hand side. Perform right moving 
+            this.getBoard().placePiece(move.pieceToMove(), king.getX() - KING_MOVE_DISTANCE, king.getY())
+            this.getBoard().placePiece(rookPiece, king.getX() - KING_MOVE_DISTANCE + 1, rook.getY())
+        } else {
+            // Rook on left hand side. Perform left moving 
+            this.getBoard().placePiece(move.pieceToMove(), king.getX() + KING_MOVE_DISTANCE, king.getY())
+            this.getBoard().placePiece(rookPiece, king.getX() + KING_MOVE_DISTANCE - 1, rook.getY())
+        }
         return true;
     }
 
     makeMove(move) {
-        console.log(move)
         var player = move.getPlayer();
 
         //check if there is actually a piece in the starting position.
@@ -112,32 +113,32 @@ class Game {
         // Check for valid move
         if (!move.pieceToMove().canMove(this.getBoard(), move.getStart(),
             move.getEnd())) {
-            console.error("Cannot move..")
+            console.error("Not a valid move,", move, this.getBoard())
             return false;
         }
 
-        if(move.pieceToMove().constructor === King){
-            move.setIsCastle(move.pieceToMove().isValidCastle(this.getBoard(),move.getStart(),move.getEnd()))
+        if(move.pieceToMove().constructor === Pawn && !(move.pieceToMove().firstMovePlayed() ) ){
+            move.pieceToMove().playFirstMove()
         }
-        if(move.isCastleMove()){
-            console.error("make castle move")
-            this.makeCastleMove(move);
+
+        //Check if castle
+        if (move.pieceToMove().constructor === King && this.makeCastleMove(move)) {
+            move.setIsCastle(true)
             this.nextTurn()
             this.movesPlayed.push(move);
             return true
         }
-
         //kill piece
         var destPiece = move.getEnd().getPiece();
-        if (!move.getEnd().isVacant()){
+        if (!move.getEnd().isVacant()) {
             destPiece.kill(true);
             move.setPieceKilled(destPiece);
         }
 
-         // store the move
-         this.movesPlayed.push(move);
-        this.getBoard().placePiece(move.pieceToMove(),move.getEnd().getX(),move.getEnd().getY())
-        this.getBoard().placePiece(PLACEHOLDER,move.getStart().getX(),move.getStart().getY())
+        // store the move
+        this.movesPlayed.push(move);
+        this.getBoard().placePiece(move.pieceToMove(), move.getEnd().getX(), move.getEnd().getY())
+        this.getBoard().placePiece(PLACEHOLDER, move.getStart().getX(), move.getStart().getY())
 
         this.nextTurn()
         return true;

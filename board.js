@@ -40,9 +40,9 @@ class Board {
 
 
     resetBoard() {
-        for (let index = 2; index < this.#squares.length; index++) {
-            for (let j = 0; j < this.#squares.length; j++) {
-                this.#squares[index][j] = new Square(index, j, PLACEHOLDER)
+        for (let y = 2; y < this.#squares.length; y++) {
+            for (let x = 0; x < this.#squares.length; x++) {
+                this.#squares[y][x] = new Square(x, y, PLACEHOLDER)
             }
 
         }
@@ -51,14 +51,14 @@ class Board {
         this.placePiece(new Rook(WHITE), 0, 7);
         this.placePiece(new Rook(WHITE), 7, 7);
         this.placePiece(new Knight(BLACK), 1, 0);
-        this.placePiece(new Knight(BLACK), 6, 0);
+        //this.placePiece(new Knight(BLACK), 6, 0);
         this.placePiece(new Knight(WHITE), 1, 7);
         this.placePiece(new Knight(WHITE), 6, 7);
-        this.placePiece(new Bishop(BLACK), 2, 0);
-        this.placePiece(new Bishop(BLACK), 5, 0);
+        //this.placePiece(new Bishop(BLACK), 2, 0);
+        //this.placePiece(new Bishop(BLACK), 5, 0);
         this.placePiece(new Bishop(WHITE), 2, 7);
         this.placePiece(new Bishop(WHITE), 5, 7);
-        this.placePiece(new Queen(BLACK), 3, 0)
+        //this.placePiece(new Queen(BLACK), 3, 0)
         this.placePiece(new Queen(WHITE), 3, 7)
         this.placePiece(new King(BLACK), 4, 0)
         this.placePiece(new King(WHITE), 4, 7)

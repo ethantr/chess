@@ -79,7 +79,7 @@ class King extends Piece {
         const START_X_KING = 4;
         const WHITE_START_Y_ = BOARD_SIZE - 1;
         const ROOK_LEFT_START_X = 0;
-        const ROOK_RIGHT_START = BOARD_SIZE - 1;
+        const ROOK_RIGHT_START_X = BOARD_SIZE - 1;
         const BLACK_START_Y = 0;
 
         if (this.hasCastled()) {
@@ -144,7 +144,7 @@ class King extends Piece {
             }
         }
         else {
-            console.log("Rook is not in starting position X")
+            console.error("Rook is not in starting position X")
         }
         return true;
     }
@@ -155,7 +155,6 @@ class King extends Piece {
             return false;
         }
 
-        console.log("Checking for valid castle.")
         if (!this.hasCastled() && this.isValidCastle(board, start, end)) {
             return true;
         }
@@ -212,7 +211,7 @@ class Pawn extends Piece {
 
     constructor(colour) {
         super(colour);
-        this.setFirstMove(true)
+        this.setFirstMove(false)
     }
 
     firstMovePlayed() {
@@ -220,7 +219,7 @@ class Pawn extends Piece {
     }
 
     playFirstMove() {
-        this.setFirstMove(false);
+        this.setFirstMove(true);
     }
 
     setFirstMove(v) {
@@ -238,27 +237,39 @@ class Pawn extends Piece {
         }
 
         var x = getDistX(start, end);
-        var y = getDistY(start, end);
+        var y = start.getY() - end.getY();
+        
+
+        if(x === 0 && y === 0){
+            return false;
+        }
+
+        var two_squares = 2;
+        var one_square = 1;
+
+
+        if (this.getColour() === BLACK) {
+            two_squares = -2;
+            one_square = -1;
+        }
+
+        console.log("Distance x" + x, "Distance y " +y,two_squares,one_square);
+
 
         // For first move moving two squares
-        if (!this.firstMovePlayed && y === 2 || end.isVacant()) {
+        if (!this.firstMovePlayed() && y === two_squares && x === 0 && end.isVacant()) {
             return true;
         }
-        // Check for moving pawn greater than moving distance
-        if (y !== 1) {
+        // Diagonal kill 
+        else if (x === 1 && y === one_square && !end.isVacant()) {
+            return true
+        }
+        // Move one forward 
+        else if (y === one_square && end.isVacant()){
+            return true;
+        } else{
             return false;
         }
-
-        // TODO: fix for correct direction
-        if (x === 0 && end.isVacant()) {
-            return true;
-        } else if (x === 1 && !end.isVacant()) {
-            return true;
-        } else {
-            return false;
-        }
-
-
     }
 
 }
