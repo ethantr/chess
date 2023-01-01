@@ -3,6 +3,7 @@
     --chess-white: #fff;
     --chess-background: darkolivegreen;
     --primary-white: #fff;
+    --square-size:3em;
 }
 
 body {
@@ -25,8 +26,8 @@ tr:nth-child(even) td:nth-child(odd) {
 }
 
 td {
-    width: 50px;
-    height: 50px;
+    width: var(--square-size);
+    height: var(--square-size);
     transition-duration: 0.2s;
 }
 
@@ -40,8 +41,8 @@ td:hover {
 
 .piece {
     transition-duration: 0.2s;
-    width: 50px;
-    height: 50px;
+    width: var(--square-size);
+    height: var(--square-size);
 }
 
 .knight-black {

@@ -19,6 +19,10 @@ class Board {
     }
 
     getSquare(x, y) {
+        if(x > BOARD_SIZE || x < 0 || y > BOARD_SIZE || y < 0){
+            console.warn("out of bounds")
+            return new Square(-1,-1);
+        }
         return this.#squares[y][x];
     }
 
@@ -58,7 +62,7 @@ class Board {
         //this.placePiece(new Bishop(BLACK), 5, 0);
         this.placePiece(new Bishop(WHITE), 2, 7);
         this.placePiece(new Bishop(WHITE), 5, 7);
-        //this.placePiece(new Queen(BLACK), 3, 0)
+        this.placePiece(new Queen(BLACK), 3, 0)
         this.placePiece(new Queen(WHITE), 3, 7)
         this.placePiece(new King(BLACK), 4, 0)
         this.placePiece(new King(WHITE), 4, 7)

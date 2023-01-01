@@ -3,7 +3,6 @@
 
 
 
-
 var game = new Game(); 
 black = new Player(BLACK)
 white = new Player(WHITE); 
@@ -23,5 +22,10 @@ window.addEventListener("keydown", event => {
     if (event.key == "r") {
       gui.constructGUIBoard();
       console.log("refreshed board.")
+      var playerTurnElement = document.getElementsByClassName('player-turn');
+
     }
   });
+
+
+  

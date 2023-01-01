@@ -88,6 +88,7 @@ class Game {
         }
         return true;
     }
+    
 
     makeMove(move) {
         var player = move.getPlayer();
@@ -142,7 +143,7 @@ class Game {
 
         this.nextTurn()
         return true;
-    }
+    }  
 
 }
 
