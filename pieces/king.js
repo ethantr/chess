@@ -125,4 +125,21 @@ class King extends Piece {
         }
     }
 
+
+    getPossibleMoves(board,start){
+        var moves = [];
+
+        for (let x = start.getX()-1; x <= start.getX()+3; x++) {
+            for (let y = start.getY()-1; y <= start.getY()+2; y++) {
+                var possible = board.getSquare(x,y);
+                if (this.canMove(board,start,possible)){
+                    moves.push(possible);
+                }
+            }
+            
+        }
+        return moves;
+    }
+    
+
 }

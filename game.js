@@ -8,6 +8,8 @@ class Game {
 
     movesPlayed = []
 
+    
+
     getBoard() {
         return this.#board;
     }
@@ -44,6 +46,7 @@ class Game {
         this.#board = new Board();
 
         this.movesPlayed = [];
+
     }
 
     playTurn(player, start_X, start_Y, end_X, end_Y) {
@@ -88,7 +91,7 @@ class Game {
         }
         return true;
     }
-    
+
 
     makeMove(move) {
         var player = move.getPlayer();
@@ -118,16 +121,20 @@ class Game {
             return false;
         }
 
-        if(move.pieceToMove().constructor === Pawn && !(move.pieceToMove().firstMovePlayed() ) ){
+        if (move.pieceToMove().constructor === Pawn && !(move.pieceToMove().firstMovePlayed())) {
             move.pieceToMove().playFirstMove()
         }
 
         //Check if castle
         if (move.pieceToMove().constructor === King && this.makeCastleMove(move)) {
-            move.setIsCastle(true)
-            this.nextTurn()
-            this.movesPlayed.push(move);
-            return true
+            if (!move.pieceToMove().hasCastled()) {
+                move.setIsCastle(true)
+                this.nextTurn()
+                this.movesPlayed.push(move);
+                return true
+            } else {
+                move.pieceToMove().playFirstMove()
+            }
         }
         //kill piece
         var destPiece = move.getEnd().getPiece();
@@ -143,7 +150,8 @@ class Game {
 
         this.nextTurn()
         return true;
-    }  
+    }
+
 
 }
 

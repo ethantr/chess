@@ -33,10 +33,22 @@ function getPieceName(piece) {
 
 class GUIBoard {
 
+    #chosen_square
+
     constructor(board){
         this.board = board
         this.constructGUIBoard()
     }
+
+    getSelectedSquare(){
+        return this.#chosen_square;
+    }
+    setSelectedSquare(square){
+        console.warn(square)
+        this.#chosen_square = square;
+    }
+
+
 
     constructGUIBoard() {
         var table = document.getElementById('board');
@@ -57,9 +69,28 @@ class GUIBoard {
                 // If not a vacant piece, set the square to a piece.
                 if (pieceName !== "null") square.className = "piece " + pieceName;
                 data_cell.appendChild(square);
+              
+                data_cell.addEventListener("click", () => { this.setSelectedSquare(currentSquare); }, false);
             }
+
 
         }
 
     }
+
+    modifyText(text){
+        
+    }
+
+    eventHandler(event) {
+        if (event.type === 'fullscreenchange') {
+          /* handle a full screen toggle */
+        } else /* fullscreenerror */ {
+          /* handle a full screen toggle error */
+        }
+
+
+        
+      }
+      
 }

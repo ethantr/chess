@@ -46,9 +46,6 @@ class Pawn extends Piece {
             one_square = -1;
         }
 
-        console.log("Distance x" + x, "Distance y " +y,two_squares,one_square);
-
-
         // For first move moving two squares
         if (!this.firstMovePlayed() && y === two_squares && x === 0 && end.isVacant()) {
             console.log("Two squares forward")
