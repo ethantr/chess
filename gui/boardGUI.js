@@ -33,6 +33,8 @@ function getPieceName(piece) {
 
 class GUIBoard {
 
+    //need an object that integrates game, has chosen piece, and chosen square to move.
+
     #chosen_square
 
     constructor(board){
@@ -70,7 +72,8 @@ class GUIBoard {
                 if (pieceName !== "null") square.className = "piece " + pieceName;
                 data_cell.appendChild(square);
               
-                data_cell.addEventListener("click", () => { this.setSelectedSquare(currentSquare); }, false);
+                data_cell.addEventListener("click", () => { this.setSelectedSquare(currentSquare); 
+                 console.log(getPossibleMoves(this.board,this.getSelectedSquare().getX(),this.getSelectedSquare().getY()) ) }, false);
             }
 
 

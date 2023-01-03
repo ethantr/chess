@@ -21,4 +21,8 @@ class Knight extends Piece {
         return x * y === 2;
     }
 
+    getPossibleMoves(board,start){
+        // Knight has total 8 possible moves.
+    }
+
 }
