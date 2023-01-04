@@ -19,7 +19,7 @@ class Board {
     }
 
     getSquare(x, y) {
-        if(x > BOARD_SIZE || x < 0 || y > BOARD_SIZE || y < 0){
+        if(x >= BOARD_SIZE || x < 0 || y >= BOARD_SIZE || y < 0){
             console.warn("out of bounds")
             return new Square(-10,-10,PLACEHOLDER);
         }

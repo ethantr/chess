@@ -35,17 +35,26 @@ class GUIBoard {
 
     //need an object that integrates game, has chosen piece, and chosen square to move.
 
+    html_board;
     #chosen_square
+    possible_moves;
 
-    constructor(board){
+    constructor(board) {
+        this.possible_moves = [];
         this.board = board
+        this.html_board = new Array(BOARD_SIZE);
+        for (let index = 0; index < this.html_board.length; index++) {
+            this.html_board[index] = new Array(BOARD_SIZE);
+            
+        }
         this.constructGUIBoard()
+        
     }
 
-    getSelectedSquare(){
+    getSelectedSquare() {
         return this.#chosen_square;
     }
-    setSelectedSquare(square){
+    setSelectedSquare(square) {
         console.warn(square)
         this.#chosen_square = square;
     }
@@ -62,18 +71,21 @@ class GUIBoard {
             //Fill in the row with squares
             for (let x = 0; x < BOARD_SIZE; x++) {
 
-                var data_cell = document.createElement('td');
-                board_row_element.appendChild(data_cell);
-                var square = document.createElement('div');
+                board_row_element.appendChild(this.constructSquareHTML(x,y));
+                // var data_cell = document.createElement('td');
+                // board_row_element.appendChild(data_cell);
+                // var square = document.createElement('div');
 
-                let currentSquare = this.board.getSquares()[y][x];
-                var pieceName = getPieceName(currentSquare.getPiece())
-                // If not a vacant piece, set the square to a piece.
-                if (pieceName !== "null") square.className = "piece " + pieceName;
-                data_cell.appendChild(square);
-              
-                data_cell.addEventListener("click", () => { this.setSelectedSquare(currentSquare); 
-                 console.log(getPossibleMoves(this.board,this.getSelectedSquare().getX(),this.getSelectedSquare().getY()) ) }, false);
+                // let currentSquare = this.board.getSquares()[y][x];
+                // var pieceName = getPieceName(currentSquare.getPiece())
+                // // If not a vacant piece, set the square to a piece.
+                // if (pieceName !== "null") square.className = "piece " + pieceName;
+                // data_cell.appendChild(square);
+
+                // data_cell.addEventListener("click", () => {
+                //     this.setSelectedSquare(currentSquare);
+                //     console.log(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY()))
+                // }, false);
             }
 
 
@@ -81,19 +93,57 @@ class GUIBoard {
 
     }
 
-    modifyText(text){
-        
+    constructSquareHTML(x, y) {
+        var data_cell = document.createElement('td');
+        var square = document.createElement('div');
+
+        let currentSquare = this.board.getSquare(x,y);
+        if(currentSquare.isOffBoard()){
+            return;
+        }
+        var pieceName = getPieceName(currentSquare.getPiece())
+        // If not a vacant piece, set the square to a piece.
+        if (pieceName !== "null") square.className = "piece " + pieceName;
+        data_cell.appendChild(square);
+
+        data_cell.addEventListener("click", () => {
+            this.setSelectedSquare(currentSquare);
+            console.log(this.highlightPossibleMoves(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY())))
+        }, false);
+
+        this.html_board[y][x] = data_cell;
+        return data_cell;
     }
 
     eventHandler(event) {
         if (event.type === 'fullscreenchange') {
-          /* handle a full screen toggle */
+            /* handle a full screen toggle */
         } else /* fullscreenerror */ {
-          /* handle a full screen toggle error */
+            /* handle a full screen toggle error */
         }
 
 
-        
-      }
-      
+
+    }
+
+    highlightPossibleMoves(moves){
+        this.possible_moves.forEach(element =>{
+            this.removeHighlightSquare(element.getX(),element.getY())
+        });
+        this.possible_moves = moves;
+        this.possible_moves.forEach(element => {
+            this.highlightSquare(element.getX(),element.getY())
+        });
+    }
+
+    removeHighlightSquare(x,y){
+        var cell = this.html_board[y][x];
+        cell.style.background = ""
+    }
+
+    highlightSquare(x,y){
+        var cell = this.html_board[y][x];
+        cell.style.background = "red"
+    }
+
 }
