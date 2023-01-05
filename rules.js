@@ -3,7 +3,7 @@ function getPossibleMoves(board,startX,startY) {
     var piece = square.getPiece()
     if (piece === null){
         console.error("Square is vacant. No moves possible.")
-        return;
+        return [];
     }
     return piece.getPossibleMoves(board,square)
 }

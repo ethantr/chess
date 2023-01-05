@@ -107,11 +107,13 @@ class GUIBoard {
         data_cell.appendChild(square);
 
         data_cell.addEventListener("click", () => {
+            
             this.setSelectedSquare(currentSquare);
             console.log(this.highlightPossibleMoves(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY())))
         }, false);
 
         this.html_board[y][x] = data_cell;
+        data_cell.style.boxSizing = "border-box";
         return data_cell;
     }
 
@@ -127,23 +129,38 @@ class GUIBoard {
     }
 
     highlightPossibleMoves(moves){
+
         this.possible_moves.forEach(element =>{
             this.removeHighlightSquare(element.getX(),element.getY())
         });
         this.possible_moves = moves;
         this.possible_moves.forEach(element => {
+            if(element.getPiece()!== PLACEHOLDER){
+                this.highlightEnemySquare(element.getX(),element.getY())
+            } else
             this.highlightSquare(element.getX(),element.getY())
         });
+        //this.highlightSquare(this.getSelectedSquare().getX(),this.getSelectedSquare().getY())
     }
 
     removeHighlightSquare(x,y){
         var cell = this.html_board[y][x];
         cell.style.background = ""
+        cell.style.border= ""; 
     }
 
     highlightSquare(x,y){
         var cell = this.html_board[y][x];
-        cell.style.background = "red"
+        cell.style.background = "rgba(220, 255, 220, 1)"
+        
+        cell.style.border= "2px solid darkred"; 
+    }
+
+    highlightEnemySquare(x,y){
+        var cell = this.html_board[y][x];
+        cell.style.background = "rgba(255, 140, 140, 1)"
+        
+        cell.style.border= "5px solid darkred"; 
     }
 
 }

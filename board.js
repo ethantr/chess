@@ -55,11 +55,11 @@ class Board {
         this.placePiece(new Rook(WHITE), 0, 7);
         this.placePiece(new Rook(WHITE), 7, 7);
         this.placePiece(new Knight(BLACK), 1, 0);
-        //this.placePiece(new Knight(BLACK), 6, 0);
+        this.placePiece(new Knight(BLACK), 6, 0);
         this.placePiece(new Knight(WHITE), 1, 7);
         this.placePiece(new Knight(WHITE), 6, 7);
-        //this.placePiece(new Bishop(BLACK), 2, 0);
-        //this.placePiece(new Bishop(BLACK), 5, 0);
+        this.placePiece(new Bishop(BLACK), 2, 0);
+        this.placePiece(new Bishop(BLACK), 5, 0);
         this.placePiece(new Bishop(WHITE), 2, 7);
         this.placePiece(new Bishop(WHITE), 5, 7);
         this.placePiece(new Queen(BLACK), 3, 0)
