@@ -27,7 +27,7 @@ class King extends Piece {
     isValidCastle(board, start, end) {
         //Check for correct positions
         const START_X_KING = 4;
-        const WHITE_START_Y_ = BOARD_SIZE - 1;
+        const WHITE_START_Y = BOARD_SIZE-1;
         const ROOK_LEFT_START_X = 0;
         const ROOK_RIGHT_START_X = BOARD_SIZE - 1;
         const BLACK_START_Y = 0;
@@ -59,14 +59,16 @@ class King extends Piece {
         var colour_y;
         switch (this.getColour()) {
             case WHITE:
-                colour_y = WHITE_START_Y_
+                colour_y = WHITE_START_Y;
+                break;
             case BLACK:
                 colour_y = BLACK_START_Y;
+                break;
         }
 
         //check if king in correct position
         if (start.getY() !== colour_y) {
-            console.error("King not in" + this.getColor() + "starting position Y.");
+            console.error("King not in" + this.getColour() + "starting position Y.", start.getY());
             return false;
         } else if (end.getY() !== colour_y) {
             console.error("Rook not in " + this.getColor() + "starting position Y.");
@@ -131,9 +133,8 @@ class King extends Piece {
 
         for (let x = start.getX()-1; x <= start.getX()+3; x++) {
             for (let y = start.getY()-1; y <= start.getY()+2; y++) {
-                var possible = board.getSquare(x,y);
-                if (this.canMove(board,start,possible)){
-                    moves.push(possible);
+                if (this.canMove(board,start,board.getSquare(x,y))){
+                    moves.push(board.getSquare(x,y));
                 }
             }
             

@@ -37,11 +37,19 @@ class GUIBoard {
 
     html_board;
     #chosen_square
+    #start_square
+    #end_square;
     possible_moves;
+    game;
 
-    constructor(board) {
+
+    constructor(game) {
+        this.game = game;
+        this.setSelectedSquare(null)
+        this.setEndSquare(null)
+        this.setStartSquare(null)
         this.possible_moves = [];
-        this.board = board
+        this.board = game.getBoard()
         this.html_board = new Array(BOARD_SIZE);
         for (let index = 0; index < this.html_board.length; index++) {
             this.html_board[index] = new Array(BOARD_SIZE);
@@ -59,6 +67,50 @@ class GUIBoard {
         this.#chosen_square = square;
     }
 
+    setStartSquare(square){
+        this.#start_square = square;
+    }
+
+    getStartSquare(){
+        return this.#start_square;
+    }
+
+    setEndSquare(square){
+        this.#end_square = square;
+    }
+
+    getEndSquare(){
+        return this.#end_square;
+    }
+
+
+    performAction(square){
+        console.warn(square)
+        this.holdSelectedSquare(square);
+
+        if (this.getStartSquare() !== null && this.getEndSquare() !== null){
+            console.log("Condition is met")
+            this.game.playTurn(this.game.currentTurn(),this.getStartSquare().getX(),this.getStartSquare().getY(),this.getEndSquare().getX(),this.getEndSquare().getY())
+            this.setStartSquare(null)
+            this.setEndSquare(null)
+            this.constructGUIBoard();
+        }
+        else if(this.getStartSquare() !== null){
+            this.highlightPossibleMoves(getPossibleMoves(this.board, this.getStartSquare().getX(), this.getStartSquare().getY()));
+        }
+
+
+    }
+
+    holdSelectedSquare(square){
+        if(this.getStartSquare() === null && !square.isVacant() && this.getEndSquare() == null && square.getPiece().getColour() === game.currentTurn().getColour()){
+            this.setStartSquare(square)
+            console.log("Start square set")
+        } else if(this.getStartSquare().getPiece() !== PLACEHOLDER){
+            this.setEndSquare(square)
+            console.log("End square set")
+        } 
+    }
 
 
     constructGUIBoard() {
@@ -72,20 +124,6 @@ class GUIBoard {
             for (let x = 0; x < BOARD_SIZE; x++) {
 
                 board_row_element.appendChild(this.constructSquareHTML(x,y));
-                // var data_cell = document.createElement('td');
-                // board_row_element.appendChild(data_cell);
-                // var square = document.createElement('div');
-
-                // let currentSquare = this.board.getSquares()[y][x];
-                // var pieceName = getPieceName(currentSquare.getPiece())
-                // // If not a vacant piece, set the square to a piece.
-                // if (pieceName !== "null") square.className = "piece " + pieceName;
-                // data_cell.appendChild(square);
-
-                // data_cell.addEventListener("click", () => {
-                //     this.setSelectedSquare(currentSquare);
-                //     console.log(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY()))
-                // }, false);
             }
 
 
@@ -107,9 +145,10 @@ class GUIBoard {
         data_cell.appendChild(square);
 
         data_cell.addEventListener("click", () => {
+            this.performAction(currentSquare);
             
-            this.setSelectedSquare(currentSquare);
-            console.log(this.highlightPossibleMoves(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY())))
+            // this.setSelectedSquare(currentSquare);
+            // console.log(this.highlightPossibleMoves(getPossibleMoves(this.board, this.getSelectedSquare().getX(), this.getSelectedSquare().getY())))
         }, false);
 
         this.html_board[y][x] = data_cell;

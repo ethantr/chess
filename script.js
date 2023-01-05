@@ -7,7 +7,7 @@ var game = new Game();
 black = new Player(BLACK)
 white = new Player(WHITE); 
 game.initialise(black,white);
-gui = new GUIBoard(game.getBoard())
+gui = new GUIBoard(game)
 // game.nextTurn()
 // console.log(game.playTurn(new Player(BLACK),1,0,2,2));
 // game.nextTurn()
