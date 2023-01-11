@@ -7,12 +7,15 @@ class Move {
     #piece_killed
     #castle_move
 
-    constructor(player, start, end) {
+    #pawn_upgrade_piece
+
+    constructor(player, start, end, promotion_piece = PLACEHOLDER) {
         this.setPlayer(player);
         this.setStartPosition(start)
         this.setEndPosition(end)
         this.setPieceMoved(start.getPiece());
         this.setIsCastle(false)
+        this.setPieceUpgrade(promotion_piece)
     }
 
     setPlayer(player) {
@@ -61,6 +64,14 @@ class Move {
 
     getPieceKilled() {
         return this.#piece_killed;
+    }
+
+    setPieceUpgrade(piece) {
+        this.#pawn_upgrade_piece = piece;
+    }
+
+    getPromotionChoice() {
+        return this.#pawn_upgrade_piece;
     }
 
     // constructor(player, start, end, piece_moved, piece_killed) {

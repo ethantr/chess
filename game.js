@@ -7,8 +7,16 @@ class Game {
     #currentTurn;
 
     movesPlayed = []
+    #status
 
-    
+    static checkmate_status = "CHECKMATE"
+    static in_check_status = "CHECK"
+    static stalemate_status = "STALEMATE"
+    static active_status = "ACTIVE"
+
+    static WHITE_START_Y = BOARD_SIZE - 1;
+    static BLACK_START_Y = 0;
+
 
     getBoard() {
         return this.#board;
@@ -48,16 +56,58 @@ class Game {
         this.#board.resetBoard()
 
         this.movesPlayed = [];
+        this.setStatus(Game.active_status);
 
     }
-    
 
-    playTurn(player, start_X, start_Y, end_X, end_Y) {
+
+    updateStatus() {
+
+        this.setStatus(Game.active_status)
+        //Check if the current player's king is in check.
+        if (isKingInCheck(this.getBoard(), this.currentTurn().getColour())) {
+            this.setStatus(Game.in_check_status)
+        }
+        // Check if the move results in a stalemate (a draw).
+        var stalemate = false;
+        // Check if the move results in a checkmate (ending the game with a win for the checking player).
+        var checkmate = false;
+    }
+
+    getStatus() {
+        return this.#status;
+    }
+
+    setStatus(status) {
+        this.#status = status;
+    }
+
+
+    isPawnBeingPromoted(move) {
+        //Check if pawn is actually being moved
+        if (!move.pieceToMove().constructor === Pawn) {
+            return false;
+        }
+
+        var playerColor = move.pieceToMove().getColour();
+        //Determine if the end square is correct
+        if (playerColor === WHITE) {
+            return move.getEnd().getY() === Game.BLACK_START_Y;
+        } else if (playerColor === BLACK) {
+            return move.getEnd().getY() === Game.WHITE_START_Y;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    playTurn(player, start_X, start_Y, end_X, end_Y, promotion_piece) {
 
         var startSquare = this.getBoard().getSquare(start_X, start_Y);
         var endSquare = this.getBoard().getSquare(end_X, end_Y)
         console.warn("Chosen piece ", startSquare, "dest", endSquare)
-        var move = new Move(player, startSquare, endSquare);
+        var move = new Move(player, startSquare, endSquare, promotion_piece);
         return this.makeMove(move, player);
     }
 
@@ -123,9 +173,21 @@ class Game {
             console.error("Not a valid move,", move, this.getBoard())
             return false;
         }
-
+        //Pawn first Move
         if (move.pieceToMove().constructor === Pawn && !(move.pieceToMove().firstMovePlayed())) {
             move.pieceToMove().playFirstMove()
+        }
+
+        //Pawn promotion move
+        if (this.isPawnBeingPromoted(move)) {
+            this.movesPlayed.push(move);
+            this.getBoard().placePiece(move.getPromotionChoice(), move.getEnd().getX(), move.getEnd().getY())
+            this.getBoard().placePiece(PLACEHOLDER, move.getStart().getX(), move.getStart().getY())
+
+            //Update status of game
+            this.nextTurn()
+            //updateStatusFunction
+            return true;
         }
 
         //Check if castle
@@ -151,7 +213,10 @@ class Game {
         this.getBoard().placePiece(move.pieceToMove(), move.getEnd().getX(), move.getEnd().getY())
         this.getBoard().placePiece(PLACEHOLDER, move.getStart().getX(), move.getStart().getY())
 
+
+        //Update status of game
         this.nextTurn()
+        //updateStatusFunction
         return true;
     }
 

@@ -1,27 +1,29 @@
 :root {
-    --chess-black:#27242191;
-    --chess-brown:#65341b;
+    --chess-black: #27242191;
+    --chess-brown: #482716;
     --chess-white: #61656cc9;
     --chess-green: darkolivegreen;
-    --chess-background: linear-gradient(var(--chess-brown),var(--primary-dark));
+    --chess-background: linear-gradient(var(--chess-brown), var(--primary-dark));
     --primary-white: #fff;
     --primary-color: #e5e5e6;
     --primary-dark: #010003;
     --primary-disabled: #7b716b;
 
     --highlight-piece: rgba(92, 214, 255, 0.297);
-    --square-size:50px;
+    --square-size: 50px;
 }
 
 body {
     font-family: 'Roboto';
     color: var(--primary-color);
-    background:var(--chess-background)
+    background: url("assets/negative-space-wooden-chess-board-modified5.jpg");
+    background-size: cover;
+    /* background: var(--chess-background); */
 }
 
 
 table {
-    margin:10px;
+    margin: 10px;
     border-collapse: collapse;
     background: var(--chess-white);
     border: solid 1px black;
@@ -82,14 +84,14 @@ td:hover {
     background-size: cover;
 }
 
-.queen-white{
+.queen-white {
     background: url("assets/queen-white.png");
-    background-size: cover;  
+    background-size: cover;
 }
 
-.queen-black{
+.queen-black {
     background: url("assets/queen-black.png");
-    background-size: cover;  
+    background-size: cover;
 }
 
 .king-black {
@@ -102,51 +104,101 @@ td:hover {
     background-size: cover;
 }
 
-.pawn-black{
+.pawn-black {
     background: url("assets/pawn-black.png");
-    background-size: cover;  
+    background-size: cover;
 }
 
-.pawn-white{
+.pawn-white {
     background: url("assets/pawn-white.png");
-    background-size: cover;  
+    background-size: cover;
 }
 
 
 .chess-board {
-    background-color: var(--chess-background)
-        /* justify-content: center;
+
+
+    /* justify-content: center;
         display: grid;
         grid-template-columns: repeat(8, 4em);
         grid-template-rows: repeat(8, 4em); */
 }
 
 
-.wrapper{
-    display:flex;
-    flex-wrap:wrap
+.wrapper {
 
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    justify-content: center;
+}
+
+.darken-element {
+    filter: brightness(50%);
 }
 
 
 /* Player Turn Box */
-.player-turn-box{
+.player-turn-box {
     background-color: var(--chess-black);
-    padding:10px;
+    padding: 10px;
     border: solid 3px var(--primary-disabled);
     border-radius: 10px;
-    display:flex;
-    flex-wrap:wrap;
-    width:fit-content;
-    height:fit-content;
-    gap:5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    height: fit-content;
+    gap: 5px;
     align-items: center;
-    margin:10px;
+    margin: 10px;
 }
 
 
-.player-turn-box img{
-    width:100px;
+.player-turn-box img {
+    width: 100px;
     background-color: var(--chess-white);
-    border-radius:5px;
+    border-radius: 5px;
+}
+
+
+/* Pawn Promotion Selector */
+
+.pawn-promotion-selector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: max-content;
+    padding: 20px;
+    border: solid 3px var(--primary-disabled);
+    border-radius: 10px;
+    background-color: var(--chess-black);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.promote-selection-list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pawn-select {
+    background-color: var(--chess-white);
+    border-radius: 4px;
+    width: 60px;
+    height: 60px;
+    transition-duration: 0.3s;
+}
+
+.pawn-select:hover,
+.pawn-select:focus {
+    background-color: var(--chess-black);
+    border-radius: 4px;
+    width: 64px;
+    height: 64px;
 }
