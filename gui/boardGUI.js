@@ -96,7 +96,11 @@ class GUIBoard {
             this.constructGUIBoard();
         }
         else if(this.getStartSquare() !== null){
-            this.highlightPossibleMoves(getPossibleMoves(this.board, this.getStartSquare().getX(), this.getStartSquare().getY()));
+            var potentialMoves = getPossibleMoves(this.board, this.getStartSquare().getX(), this.getStartSquare().getY())
+            if(potentialMoves.length === 0){
+                this.setStartSquare(null)
+            } else 
+            this.highlightPossibleMoves(potentialMoves);
         }
 
 
@@ -106,7 +110,12 @@ class GUIBoard {
         if(this.getStartSquare() === null && !square.isVacant() && this.getEndSquare() == null && square.getPiece().getColour() === game.currentTurn().getColour()){
             this.setStartSquare(square)
             console.log("Start square set")
-        } else if(this.getStartSquare().getPiece() !== PLACEHOLDER){
+            
+        } 
+        else if (square.isVacant && this.getStartSquare() == null){
+            return
+        }
+        else if(this.getStartSquare().getPiece() !== PLACEHOLDER){
             this.setEndSquare(square)
             console.log("End square set")
         } 
@@ -156,16 +165,7 @@ class GUIBoard {
         return data_cell;
     }
 
-    eventHandler(event) {
-        if (event.type === 'fullscreenchange') {
-            /* handle a full screen toggle */
-        } else /* fullscreenerror */ {
-            /* handle a full screen toggle error */
-        }
-
-
-
-    }
+    
 
     highlightPossibleMoves(moves){
 
@@ -179,7 +179,7 @@ class GUIBoard {
             } else
             this.highlightSquare(element.getX(),element.getY())
         });
-        //this.highlightSquare(this.getSelectedSquare().getX(),this.getSelectedSquare().getY())
+        this.highlightSquare(this.getStartSquare().getX(),this.getStartSquare().getY())
     }
 
     removeHighlightSquare(x,y){
@@ -190,7 +190,7 @@ class GUIBoard {
 
     highlightSquare(x,y){
         var cell = this.html_board[y][x];
-        cell.style.background = "rgba(220, 255, 220, 1)"
+        cell.style.background = "orange"
         
         cell.style.border= "2px solid darkred"; 
     }

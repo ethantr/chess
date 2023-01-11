@@ -44,10 +44,13 @@ class Game {
             this.setCurrentTurn(player2)
         }
         this.#board = new Board();
+        this.#board.cleanBoard();
+        this.#board.resetBoard()
 
         this.movesPlayed = [];
 
     }
+    
 
     playTurn(player, start_X, start_Y, end_X, end_Y) {
 
@@ -115,7 +118,7 @@ class Game {
         }
 
         // Check for valid move
-        if (!move.pieceToMove().canMove(this.getBoard(), move.getStart(),
+        if (!move.pieceToMove().canMoveSafe(this.getBoard(), move.getStart(),
             move.getEnd())) {
             console.error("Not a valid move,", move, this.getBoard())
             return false;

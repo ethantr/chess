@@ -107,10 +107,9 @@ class King extends Piece {
             return false;
         }
 
-        if (!this.hasCastled() && this.isValidCastle(board, start, end)) {
-            return true;
-        }
-        console.log("Is the end square vacant?", end.isVacant(), end)
+        // if (!this.hasCastled() && this.isValidCastle(board, start, end)) {
+        //     return true;
+        // }
         //Check if a piece on the end position is being replaced
         if (!end.isVacant() && this.isSameTeam(end.getPiece())) {
             return false;
@@ -118,7 +117,9 @@ class King extends Piece {
         var x = getDistX(start, end)
         var y = getDistY(start, end)
 
-        if (x < 2 && y < 2 && x+y > 0 ) {
+        var canMove = x < 2 && y < 2 && x+y > 0 
+
+        if (canMove) {
             //TODO: check if this move results in king getting killed.
             return true;
         } else {
@@ -133,7 +134,7 @@ class King extends Piece {
 
         for (let x = start.getX()-1; x <= start.getX()+3; x++) {
             for (let y = start.getY()-1; y <= start.getY()+2; y++) {
-                if (this.canMove(board,start,board.getSquare(x,y))){
+                if (this.canMoveSafe(board,start,board.getSquare(x,y))){
                     moves.push(board.getSquare(x,y));
                 }
             }

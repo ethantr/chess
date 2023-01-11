@@ -79,21 +79,21 @@ class Pawn extends Piece {
         }
 
         var possible1 = board.getSquare(start.getX(),start.getY()-one_square);
-        if (this.canMove(board,start,possible1)){
+        if (this.canMoveSafe(board,start,possible1)){
             moves.push(possible1);
         }
         var possible2 = board.getSquare(start.getX(),start.getY()-two_squares);
-        if (this.canMove(board,start,possible2)){
+        if (this.canMoveSafe(board,start,possible2)){
             moves.push(possible2);
         }
 
         var possibleLeft = board.getSquare(start.getX()-1,start.getY()-one_square);
-        if (this.canMove(board,start,possibleLeft)){
+        if (this.canMoveSafe(board,start,possibleLeft)){
             moves.push(possibleLeft);
         }
 
         var possibleRight = board.getSquare(start.getX()+1,start.getY()-one_square);
-        if (this.canMove(board,start,possibleRight)){
+        if (this.canMoveSafe(board,start,possibleRight)){
             moves.push(possibleRight);
         }
 

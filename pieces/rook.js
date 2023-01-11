@@ -20,7 +20,53 @@ class Rook extends Piece {
         return this.#firstMove
     }
 
+    isPathClear(board, start, end) {
+         //Check horizontal path is clear
+
+        if (start.getY() === end.getY()) {
+            var start_X = Math.min(start.getX(), end.getX())
+            var end_X = Math.max(start.getX(), end.getX())
+
+            //Ensures selected piece is not included in path finding.
+            let x = start_X === start.getX() ? start_X + 1 : start_X
+            for (x; x < end_X; x++) {
+                let square = board.getSquare(x, start.getY())
+                if (!square.isVacant()) {
+                    var piece = square.getPiece()
+                    console.warn(piece)
+                    if (piece.getColour() === start.getPiece().getColour() || (x !== end_X && x !== start_X)) {
+                        console.warn("Horizontal path not clear.")
+                        return false;
+                    }
+                }
+
+            }
+        }
+        //Check Vertical path is clear
+        else if (start.getX() === end.getX()) {
+            var start_Y = Math.min(start.getY(), end.getY())
+            var end_Y = Math.max(start.getY(), end.getY())
+            //Ensures selected piece is not included in path finding.
+            let y = start_Y === start.getY() ? start_Y + 1 : start_Y
+
+            for (y; y < end_Y; y++) {
+                let square = board.getSquare(start.getX(), y)
+                if (!square.isVacant()) {
+                    console.warn(square)
+                    if (square.getPiece().getColour() === start.getPiece().getColour() || (y !== end_Y && y !== start_Y)) {
+                        console.warn("Matching colour",square.getPiece().getColour() === start.getPiece().getColour(), "Not complete path",y !== end_Y, y,end_Y)
+                        console.warn("Vertical path not clear.")
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
     canMove(board, start, end) {
+        
 
         if (start.isOffBoard() || end.isOffBoard()) {
             return false;
@@ -33,57 +79,49 @@ class Rook extends Piece {
         var x = getDistX(start, end);
         var y = getDistY(start, end);
 
-        return x >= 1 && y === 0 || y >= 1 && x === 0;
+        var canMove = x >= 1 && y === 0 || y >= 1 && x === 0
+        var path = this.isPathClear(board,start,end)
+        
+        return canMove && this.isPathClear(board,start,end);
     }
 
+
+    
 
     getPossibleMoves(board, start) {
         var moves = [];
 
+        //Left Rook
         for (let index = start.getX() - 1; index >= 0; index--) {
             var possibleLeft = board.getSquare(index, start.getY());
-            if (this.canMove(board, start, possibleLeft) && !possibleLeft.isVacant()) {
-                moves.push(possibleLeft);
-                break;
-            } else if (this.canMove(board, start, possibleLeft)) {
+            if (this.canMoveSafe(board, start, possibleLeft)) {
                 moves.push(possibleLeft);
             }
-            else break;
         }
-
+        //Right rook
         for (let index = start.getX() + 1; index < BOARD_SIZE; index++) {
             var possibleRight = board.getSquare(index, start.getY());
-            if (this.canMove(board, start, possibleRight) && !possibleRight.isVacant()) {
-                moves.push(possibleRight);
-                break;
-            }
-            else if (this.canMove(board, start, possibleRight)) {
+            if (this.canMoveSafe(board, start, possibleRight)) {
                 moves.push(possibleRight);
             }
-            else break;
         }
-
+        //Up rook
         for (let index = start.getY() - 1; index >= 0; index--) {
             var possibleUp = board.getSquare(start.getX(), index);
-            if (this.canMove(board, start, possibleUp) && !possibleUp.isVacant()) {
-                moves.push(possibleUp);
-                break;
-            }
-            else if (this.canMove(board, start, possibleUp)) {
-                moves.push(possibleUp);
-            }
-            else break;
-        }
 
+            if (this.canMoveSafe(board, start, possibleUp)) {
+                moves.push(possibleUp);
+            }
+            
+        }
+        //Down rook
         for (let index = start.getY() + 1; index < BOARD_SIZE; index++) {
             var possibleDown = board.getSquare(start.getX(), index);
-            if (this.canMove(board, start, possibleDown) && !possibleDown.isVacant()) {
+       
+            if (this.canMoveSafe(board, start, possibleDown)) {
                 moves.push(possibleDown);
-                break;
-            }
-            else if (this.canMove(board, start, possibleDown)) {
-                moves.push(possibleDown);
-            } else break;
+            } 
+           
         }
 
         return moves;

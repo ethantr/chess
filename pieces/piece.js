@@ -45,6 +45,21 @@ class Piece {
     canMove(board, start, end) {
 
     }
+
+    canCheck(board, start, end) {
+
+        var possibleMoves = this.getPossibleMoves(board,start,end);
+        possibleMoves.forEach(square => {
+            if(square.getX() === end.getX() && square.getY() === end.getY()){
+                return true;
+        }
+        });
+        return false;
+    }
+
+    canMoveSafe(board,start,end){
+        return this.canMove(board,start,end) && moveResultsInCheck(board,start,end)
+    }
 }
 
 

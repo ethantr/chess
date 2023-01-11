@@ -17,57 +17,70 @@ class Bishop extends Piece {
         var x = getDistX(start, end);
         var y = getDistY(start, end);
 
-        return x === y && x > 0;
+        var canMove = x === y && x > 0
+        return canMove && this.isPathClear(board,start,end);
     }
 
-    getPossibleMoves(board,start){
+    isPathClear(board, start, end) {
+        //Check diagonal path
+        if(getDistX(start,end) === getDistY(start,end)){
+            //Determine direction of y and x paths
+            var y_step = (start.getY() > end.getY())? -1 : 1
+            var x_step = (start.getX() > end.getX())? -1 : 1
+
+            var y = start.getY() + y_step
+            var x = start.getX() + x_step
+            while(y !== end.getY() && x !== end.getX()){
+                let square = board.getSquare(x, y)
+                if (!square.isVacant()){
+                    if (square.getPiece().getColour() === start.getPiece().getColour() || y !== end.getY()){
+                        console.warn("Diagonal path not clear.")
+                        return false;
+                    }
+                }
+                y += y_step;
+                x+=x_step;
+            }
+        }
+        return true;
+    }
+
+    getPossibleMoves(board, start) {
         var moves = []
-        //Right Down
-        for (let index = 1; index < BOARD_SIZE; index++) {
-            var possible = board.getSquare(start.getX()+index, start.getY()+index);
-            if (this.canMove(board, start, possible) && !possible.isVacant()) {
-                moves.push(possible);
-                break;
-            } else if (this.canMove(board, start, possible)) {
+         //Right Down
+         for (let index = 1; index < BOARD_SIZE; index++) {
+            var possible = board.getSquare(start.getX() + index, start.getY() + index);
+            if (this.canMoveSafe(board, start, possible)) {
                 moves.push(possible);
             }
-            else break;
         }
 
         //Right Up
         for (let index = 1; index < BOARD_SIZE; index++) {
-            var possible = board.getSquare(start.getX()+index, start.getY()-index);
-            if (this.canMove(board, start, possible) && !possible.isVacant()) {
-                moves.push(possible);
-                break;
-            } else if (this.canMove(board, start, possible)) {
+            var possible = board.getSquare(start.getX() + index, start.getY() - index);
+    
+            if (this.canMoveSafe(board, start, possible)) {
                 moves.push(possible);
             }
-            else break;
+    
         }
 
         //Left Up
         for (let index = 1; index < BOARD_SIZE; index++) {
-            var possible = board.getSquare(start.getX()-index, start.getY()-index);
-            if (this.canMove(board, start, possible) && !possible.isVacant()) {
-                moves.push(possible);
-                break;
-            } else if (this.canMove(board, start, possible)) {
+            var possible = board.getSquare(start.getX() - index, start.getY() - index);
+        
+            if (this.canMoveSafe(board, start, possible)) {
                 moves.push(possible);
             }
-            else break;
         }
 
         //Left Down
         for (let index = 1; index < BOARD_SIZE; index++) {
-            var possible = board.getSquare(start.getX()-index, start.getY()+index);
-            if (this.canMove(board, start, possible) && !possible.isVacant()) {
-                moves.push(possible);
-                break;
-            } else if (this.canMove(board, start, possible)) {
+            var possible = board.getSquare(start.getX() - index, start.getY() + index);
+
+            if (this.canMoveSafe(board, start, possible)) {
                 moves.push(possible);
             }
-            else break;
         }
 
         return moves;

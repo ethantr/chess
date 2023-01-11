@@ -8,9 +8,7 @@ class Board {
             this.#squares[i] = new Array(BOARD_SIZE);
         }
 
-        console.log(this.#squares)
-        this.cleanBoard();
-        this.resetBoard()
+        
         // this.constructGUIBoard()
     }
 
@@ -97,6 +95,20 @@ class Board {
 
     }
 
+
+    getKingPosition(playerColour){
+        console.log(this)
+        for (var y = 0; y < BOARD_SIZE;y++){
+            for (var x = 0; x < BOARD_SIZE;x++){
+                var searchSquare = this.getSquare(x,y);
+
+                if(!searchSquare.isVacant() && searchSquare.getPiece().constructor === King && searchSquare.getPiece().getColour()===playerColour){
+                    console.log("King found at square",searchSquare.getX(),searchSquare.getY())
+                    return searchSquare;
+                }
+            }
+        }
+    }
 
 
 }
