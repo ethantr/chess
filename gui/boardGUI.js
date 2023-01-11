@@ -56,6 +56,7 @@ class GUIBoard {
             
         }
         this.constructGUIBoard()
+        this.updatePlayerTurnBox();
         
     }
 
@@ -94,6 +95,7 @@ class GUIBoard {
             this.setStartSquare(null)
             this.setEndSquare(null)
             this.constructGUIBoard();
+            this.updatePlayerTurnBox();
         }
         else if(this.getStartSquare() !== null){
             var potentialMoves = getPossibleMoves(this.board, this.getStartSquare().getX(), this.getStartSquare().getY())
@@ -190,7 +192,7 @@ class GUIBoard {
 
     highlightSquare(x,y){
         var cell = this.html_board[y][x];
-        cell.style.background = "orange"
+        cell.style.background = "rgba(255, 145, 0, 0.497)"
         
         cell.style.border= "2px solid darkred"; 
     }
@@ -200,6 +202,18 @@ class GUIBoard {
         cell.style.background = "rgba(255, 140, 140, 1)"
         
         cell.style.border= "5px solid darkred"; 
+    }
+
+
+    // Update Player Turn Box
+
+
+    updatePlayerTurnBox(){
+        var playerTurn = game.currentTurn().getColour();
+        const playerNameLabel = document.getElementById('current-player-label')
+        const playerImg = document.getElementById('current-player-img')
+        playerNameLabel.textContent = playerTurn;
+        playerImg.src = 'assets/pawn-'+ playerTurn.toLowerCase() +".png"
     }
 
 }

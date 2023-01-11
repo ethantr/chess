@@ -1,20 +1,27 @@
 :root {
-    --chess-black: rgb(69, 0, 0);
-    --chess-white: #fff;
-    --chess-background: darkolivegreen;
+    --chess-black:#27242191;
+    --chess-brown:#65341b;
+    --chess-white: #61656cc9;
+    --chess-green: darkolivegreen;
+    --chess-background: linear-gradient(var(--chess-brown),var(--primary-dark));
     --primary-white: #fff;
-    --square-size:3em;
+    --primary-color: #e5e5e6;
+    --primary-dark: #010003;
+    --primary-disabled: #7b716b;
+
+    --highlight-piece: rgba(92, 214, 255, 0.297);
+    --square-size:50px;
 }
 
 body {
     font-family: 'Roboto';
-    color: var(--primary-white);
-    background-color: var(--chess-background);
+    color: var(--primary-color);
+    background:var(--chess-background)
 }
 
 
 table {
-    margin: 0 auto;
+    margin:10px;
     border-collapse: collapse;
     background: var(--chess-white);
     border: solid 1px black;
@@ -32,11 +39,11 @@ td {
 }
 
 td:hover {
-    background: lightblue !important;
+    background: var(--highlight-piece) !important;
 }
 
 .piece:hover {
-    background-color: rgba(201, 255, 151, 0.952) !important;
+    background-color: var(--highlight-piece) !important;
 }
 
 .piece {
@@ -112,4 +119,34 @@ td:hover {
         display: grid;
         grid-template-columns: repeat(8, 4em);
         grid-template-rows: repeat(8, 4em); */
+}
+
+
+.wrapper{
+    display:flex;
+    flex-wrap:wrap
+
+}
+
+
+/* Player Turn Box */
+.player-turn-box{
+    background-color: var(--chess-black);
+    padding:10px;
+    border: solid 3px var(--primary-disabled);
+    border-radius: 10px;
+    display:flex;
+    flex-wrap:wrap;
+    width:fit-content;
+    height:fit-content;
+    gap:5px;
+    align-items: center;
+    margin:10px;
+}
+
+
+.player-turn-box img{
+    width:100px;
+    background-color: var(--chess-white);
+    border-radius:5px;
 }

@@ -27,7 +27,7 @@ class King extends Piece {
     isValidCastle(board, start, end) {
         //Check for correct positions
         const START_X_KING = 4;
-        const WHITE_START_Y = BOARD_SIZE-1;
+        const WHITE_START_Y = BOARD_SIZE - 1;
         const ROOK_LEFT_START_X = 0;
         const ROOK_RIGHT_START_X = BOARD_SIZE - 1;
         const BLACK_START_Y = 0;
@@ -117,7 +117,7 @@ class King extends Piece {
         var x = getDistX(start, end)
         var y = getDistY(start, end)
 
-        var canMove = x < 2 && y < 2 && x+y > 0 
+        var canMove = x < 2 && y < 2 && x + y > 0
 
         if (canMove) {
             //TODO: check if this move results in king getting killed.
@@ -129,19 +129,19 @@ class King extends Piece {
     }
 
 
-    getPossibleMoves(board,start){
+    getPossibleMoves(board, start) {
         var moves = [];
 
-        for (let x = start.getX()-1; x <= start.getX()+3; x++) {
-            for (let y = start.getY()-1; y <= start.getY()+2; y++) {
-                if (this.canMoveSafe(board,start,board.getSquare(x,y))){
-                    moves.push(board.getSquare(x,y));
+        for (let x = start.getX() - 1; x <= start.getX() + 3; x++) {
+            for (let y = start.getY() - 1; y <= start.getY() + 2; y++) {
+                if (this.canMoveSafe(board, start, board.getSquare(x, y))) {
+                    moves.push(board.getSquare(x, y));
                 }
             }
-            
+
         }
         return moves;
     }
-    
+
 
 }

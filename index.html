@@ -33,14 +33,20 @@
     <script src="script.js" async defer></script>
 
     <h1>Chess</h1>
-    <div class="chess-board">
-        <table id="board"></table>
-    </div>
 
-    <div>
-        <h2>IM KIRA</h2>
-        <h2 class="player-turn">Player</h2>
+    <div class ="wrapper">
+
+        <div class = "player-turn-box">
+            <h2 id="current-player-label">Player</h2>
+            <img id = "current-player-img" src = "assets/pawn-white.png" alt ="Current Player Chess Piece">
+        </div>
+        <div class="chess-board">
+            <table id="board"></table>
+        </div>
+
     </div>
+    
+
 </body>
 
 </html>
