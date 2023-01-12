@@ -64,7 +64,6 @@ class King extends Piece {
             console.error("King not in" + this.getColour() + "starting position Y.", start.getY());
             return false;
         } else if (end.getY() !== colour_y) {
-            console.error("End square not in " + this.getColour() + "starting position Y.");
             return false;
         }
 

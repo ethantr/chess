@@ -59,6 +59,7 @@ class GUIBoard {
         }
         this.constructGUIBoard()
         this.updatePlayerTurnBox();
+        this.updateGameStatus()
 
     }
 
@@ -86,10 +87,12 @@ class GUIBoard {
         return this.#end_square;
     }
 
+
+    // Checks if pawn is about to promote
     isPawnPromoting() {
         const WHITE_FINISH = 0;
         const BLACK_FINISH = BOARD_SIZE - 1;
-        var pawn_is_moved = this.#start_square.getPiece().constructor === Pawn
+        var pawn_is_moved = this.getStartSquare().getPiece().constructor === Pawn
         var can_move = this.getStartSquare().getPiece().canMoveSafe(this.game.getBoard(),this.getStartSquare(),this.getEndSquare());
         var white_condition = this.game.currentTurn().getColour() === WHITE && this.getEndSquare().getY() === WHITE_FINISH
         var black_condition = this.game.currentTurn().getColour() === BLACK && this.getEndSquare().getY() === BLACK_FINISH;
@@ -114,7 +117,7 @@ class GUIBoard {
             } else {
                 this.game.playTurn(this.game.currentTurn(), this.getStartSquare().getX(), this.getStartSquare().getY(), this.getEndSquare().getX(), this.getEndSquare().getY())
             }
-            this.updatePlayedMoveBox()
+            this.updateGameStatus()
             this.setStartSquare(null)
             this.setEndSquare(null)
             this.constructGUIBoard();
@@ -310,13 +313,11 @@ class GUIBoard {
     }
 
 
-    updatePlayedMoveBox(){
+    updateGameStatus(){
         
-        const label = document.getElementById('piece-move-label')
-        var pieceMoved = getPieceName(this.getStartSquare().getPiece())
-        var endSquareX = this.getEndSquare().getX()
-        var endSquareY = this.getEndSquare().getY()
-        var newLabel = pieceMoved + " moved to " + endSquareX +", "+endSquareY
+        const label = document.getElementById('status-label')
+        var status = game.getStatus()
+        var newLabel = status;
         console.log(newLabel)
 
         label.textContent = newLabel

@@ -8,7 +8,7 @@ class Board {
             this.#squares[i] = new Array(BOARD_SIZE);
         }
 
-        
+
         // this.constructGUIBoard()
     }
 
@@ -96,15 +96,80 @@ class Board {
     }
 
 
-    getKingPosition(playerColour){
-        for (var y = 0; y < BOARD_SIZE;y++){
-            for (var x = 0; x < BOARD_SIZE;x++){
-                var searchSquare = this.getSquare(x,y);
-                if(!searchSquare.isVacant() && searchSquare.getPiece().constructor === King && searchSquare.getPiece().getColour()===playerColour){
+    getKingPosition(playerColour) {
+        for (var y = 0; y < BOARD_SIZE; y++) {
+            for (var x = 0; x < BOARD_SIZE; x++) {
+                var searchSquare = this.getSquare(x, y);
+                if (!searchSquare.isVacant() && searchSquare.getPiece().constructor === King && searchSquare.getPiece().getColour() === playerColour) {
                     return searchSquare;
                 }
             }
         }
+    }
+
+    isKingInCheck(playerColour) {
+
+        //Find position of king
+        var kingSquare = this.getKingPosition(playerColour)
+
+
+        //Get opponent pieces and check if they can capture king
+        for (var y = 0; y < BOARD_SIZE; y++) {
+            for (var x = 0; x < BOARD_SIZE; x++) {
+                var searchSquare = this.getSquare(x, y);
+
+                if (!searchSquare.isVacant() && searchSquare.getPiece().canMove(this, searchSquare, kingSquare)) {
+                    console.log(searchSquare.getPiece() + " at " + searchSquare.getX() + ", " + searchSquare.getY() + " can check")
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    #getPlayerSquares(player_colour){
+        var player_squares = []
+        for (var y = 0; y < BOARD_SIZE; y++) {
+            for (var x = 0; x < BOARD_SIZE; x++) {
+                var searchSquare = this.getSquare(x, y);
+                if (!searchSquare.isVacant() && searchSquare.getPiece().getColour() === player_colour) {
+                    player_squares.push(searchSquare)
+                }
+            }
+        }
+        return player_squares
+    }
+
+    isCheckmate(player_colour) {
+        console.log('checking for checkmate')
+
+        //Find position of king
+        var kingSquare = this.getKingPosition(player_colour);
+        var kingLegalMoves = getPossibleMoves(this, kingSquare.getX(), kingSquare.getY())
+        // Check for legal king moves to squares that are not under attack
+        if (kingLegalMoves.length >= 1) {
+            console.warn(player_colour+" King can make moves",kingLegalMoves)
+            return false
+        }
+
+        //Get player pieces
+         const playerSquares = this.#getPlayerSquares(player_colour)
+         var checkmate = true;
+         playerSquares.forEach(square => {
+            const num_possible_moves = getPossibleMoves(this,square.getX(),square.getY()).length
+            if (num_possible_moves >= 1) {
+                checkmate = false;
+            }
+         });
+
+         return checkmate;
+
+
+        // May be efficient steps to implement:
+        // Verify if the king is in check, if not there's no need to continue.
+        // Identify the attacker piece.
+        // Check if the attacking piece can be captured by own pieces or if there's any blocking move.
     }
 
 

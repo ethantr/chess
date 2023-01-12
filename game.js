@@ -65,13 +65,16 @@ class Game {
 
         this.setStatus(Game.active_status)
         //Check if the current player's king is in check.
-        if (isKingInCheck(this.getBoard(), this.currentTurn().getColour())) {
+        if (this.getBoard().isKingInCheck(this.currentTurn().getColour())) {
             this.setStatus(Game.in_check_status)
         }
         // Check if the move results in a stalemate (a draw).
         var stalemate = false;
         // Check if the move results in a checkmate (ending the game with a win for the checking player).
         var checkmate = false;
+        if(this.getBoard().isCheckmate(this.currentTurn().getColour())){
+            this.setStatus(Game.checkmate_status);
+        }
     }
 
     getStatus() {
@@ -121,11 +124,15 @@ class Game {
             console.warn("Not king selected.")
             return false;
         }
-        return (!move.pieceToMove().hasCastled() && move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
+        return (!this.getBoard(this.currentTurn().getColour()) && !move.pieceToMove().hasCastled() && move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
     }
 
     //Plays the selected player's turn, if the move inputted is valid
     playTurn(player, start_X, start_Y, end_X, end_Y, promotion_piece) {
+        if(this.getStatus() === Game.checkmate_status){
+            console.error("Game is over!")
+            return false
+        }
 
         var startSquare = this.getBoard().getSquare(start_X, start_Y);
         var endSquare = this.getBoard().getSquare(end_X, end_Y)
@@ -217,6 +224,7 @@ class Game {
             this.movesPlayed.push(move);
              //Update status of game
              this.nextTurn()
+             this.updateStatus()
              //updateStatusFunction
              return true;
 
@@ -233,7 +241,7 @@ class Game {
 
             //Update status of game
             this.nextTurn()
-            //updateStatusFunction
+            this.updateStatus()
             return true;
         }
 
@@ -269,7 +277,7 @@ class Game {
 
         //Update status of game
         this.nextTurn()
-        //updateStatusFunction
+        this.updateStatus()
         return true;
     }
 
