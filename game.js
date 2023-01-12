@@ -121,7 +121,7 @@ class Game {
             console.warn("Not king selected.")
             return false;
         }
-        return (move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
+        return (!move.pieceToMove().hasCastled() && move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
     }
 
     //Plays the selected player's turn, if the move inputted is valid
@@ -148,7 +148,7 @@ class Game {
 
 
         //Set castled for rook and king.
-        move.pieceToMove().playFirstMove();
+        king.getPiece().playFirstMove();
         var rookPiece = rook.getPiece();
         rookPiece.playFirstMove();
 
