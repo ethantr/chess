@@ -1,11 +1,20 @@
 class King extends Piece {
 
     #hasCastled
+    #inCheck
 
     constructor(colour) {
         super(colour)
         this.setCastled(false);
+        this.setInCheck(false)
 
+    }
+
+    setInCheck(check){
+        this.#inCheck = check;
+    }
+    isChecked(){
+        return this.#inCheck;
     }
 
     setCastled(castledPerformed) {
@@ -36,6 +45,10 @@ class King extends Piece {
         //Check if king has already castled.
         if (this.firstMovePlayed()) {
             console.error("King has already made first move.")
+            return false;
+        }
+
+        if(this.isChecked()){
             return false;
         }
         // //If in check, cannot castle.
@@ -70,6 +83,10 @@ class King extends Piece {
         //Get rook square
         const rook_X = start.getX() > end.getX() ? ROOK_LEFT_START_X : ROOK_RIGHT_START_X;
         const rook_square = board.getSquare(rook_X, end.getY())
+
+        if(rook_square.isVacant()){
+            return false;
+        }
 
         if (rook_square.getPiece().constructor !== Rook) {
             console.error("Square where rook should be does not contain a Rook");

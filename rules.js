@@ -9,34 +9,6 @@ function getPossibleMoves(board,startX,startY) {
 }
 
 
-// function isKingInCheck(board,playerColour){
-
-//     //Find position of king
-//     var kingSquare = board.getKingPosition(playerColour)
-   
-
-//     //Get opponent pieces and check if they can capture king
-//     for (var y = 0; y < BOARD_SIZE;y++){
-//         for (var x = 0; x < BOARD_SIZE;x++){
-//             var searchSquare = board.getSquare(x,y);
-
-//             if(!searchSquare.isVacant() && searchSquare.getPiece().canMove(board,searchSquare,kingSquare)){
-//                 console.log(searchSquare.getPiece() + " at " + searchSquare.getX() +", "+searchSquare.getY() + " can check")
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-
-// }
-
-
-// function isValidMove(pieceToMove,start,end,board){
-//     return pieceToMove.canMove(board,start,end) && !moveResultsInCheck(board,start,end)
-
-// }
-
-
 function moveResultsInCheck(board,start,end){
     var playerColour = start.getPiece().getColour();
 

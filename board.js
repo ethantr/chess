@@ -1,6 +1,7 @@
 class Board {
 
     #squares
+   
     constructor() {
         this.#squares = new Array(BOARD_SIZE);
 
@@ -8,8 +9,6 @@ class Board {
             this.#squares[i] = new Array(BOARD_SIZE);
         }
 
-
-        // this.constructGUIBoard()
     }
 
     getSquares() {
@@ -31,9 +30,9 @@ class Board {
 
 
     cleanBoard() {
-        for (let index = 0; index < this.#squares.length; index++) {
-            for (let j = 0; j < this.#squares.length; j++) {
-                this.#squares[index][j] = new Square(index, j, PLACEHOLDER)
+        for (let y = 0; y < this.#squares.length; y++) {
+            for (let x = 0; x < this.#squares.length; x++) {
+                this.getSquares()[y][x] = new Square(x, y, PLACEHOLDER)
             }
         }
     }
@@ -97,6 +96,7 @@ class Board {
 
 
     getKingPosition(playerColour) {
+
         for (var y = 0; y < BOARD_SIZE; y++) {
             for (var x = 0; x < BOARD_SIZE; x++) {
                 var searchSquare = this.getSquare(x, y);
@@ -128,7 +128,7 @@ class Board {
 
     }
 
-    #getPlayerSquares(player_colour){
+    getPlayerSquares(player_colour){
         var player_squares = []
         for (var y = 0; y < BOARD_SIZE; y++) {
             for (var x = 0; x < BOARD_SIZE; x++) {
@@ -139,6 +139,20 @@ class Board {
             }
         }
         return player_squares
+    }
+
+    // Returns the squares with the requested pieces (colour,type)
+    getPieces(player_colour,type){
+        var squares = []
+        for (var y = 0; y < BOARD_SIZE; y++) {
+            for (var x = 0; x < BOARD_SIZE; x++) {
+                var searchSquare = this.getSquare(x, y);
+                if (!searchSquare.isVacant() && searchSquare.getPiece().getColour() === player_colour && searchSquare.getPiece().constructor === type) {
+                    squares.push(searchSquare)
+                }
+            }
+        }
+        return squares
     }
 
     isCheckmate(player_colour) {
@@ -154,7 +168,7 @@ class Board {
         }
 
         //Get player pieces
-         const playerSquares = this.#getPlayerSquares(player_colour)
+         const playerSquares = this.getPlayerSquares(player_colour)
          var checkmate = true;
          playerSquares.forEach(square => {
             const num_possible_moves = getPossibleMoves(this,square.getX(),square.getY()).length
@@ -170,6 +184,15 @@ class Board {
         // Verify if the king is in check, if not there's no need to continue.
         // Identify the attacker piece.
         // Check if the attacking piece can be captured by own pieces or if there's any blocking move.
+    }
+
+
+
+    setDebugBoard(){
+        this.cleanBoard();
+        this.placePiece(new Queen(WHITE), 3, 7)
+        this.placePiece(new King(BLACK), 4, 0)
+        this.placePiece(new King(WHITE), 4, 7)
     }
 
 

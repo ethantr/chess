@@ -34,7 +34,7 @@ class Bishop extends Piece {
                 let square = board.getSquare(x, y)
                 if (!square.isVacant()){
                     if (square.getPiece().getColour() === start.getPiece().getColour() || y !== end.getY()){
-                        console.warn("Diagonal path not clear.")
+                        
                         return false;
                     }
                 }

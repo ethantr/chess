@@ -115,16 +115,6 @@ td:hover {
 }
 
 
-.chess-board {
-
-
-    /* justify-content: center;
-        display: grid;
-        grid-template-columns: repeat(8, 4em);
-        grid-template-rows: repeat(8, 4em); */
-}
-
-
 .wrapper {
 
     display: flex;
@@ -201,4 +191,36 @@ td:hover {
     border-radius: 4px;
     width: 64px;
     height: 64px;
+}
+
+
+
+/* New Game Button */
+#new-game-button {
+    background-color: var(--chess-white);
+    color: var(--primary-white);
+    border: 0;
+    border-radius: 5px;
+    width: 80px;
+    height: 80px;
+    transition-duration: 0.5s;
+    
+}
+
+#new-game-button:hover {
+   
+    background-color: var(--chess-black);
+    border-radius: 4px;
+    width: 84px;
+    height: 84px;
+    
+}
+#new-game-button span{
+    font-size:40px;
+    transition-duration: 0.4s;
+}
+
+#new-game-button span:hover{
+    
+    font-size: 50px;
 }

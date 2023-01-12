@@ -8,6 +8,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Roboto Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
@@ -31,21 +35,30 @@
     <script src="player.js"></script>
 
     <script src="script.js" async defer></script>
-
-    <h1>Chess</h1>
+    <h1 style = "text-align: center;">Chess</h1>
 
     <div class="wrapper">
 
         <div class="player-turn-box">
             <h2 id="current-player-label">Player</h2>
+            <h2 id="status-label">STATUS</h2>
             <img id="current-player-img" src="assets/pawn-white.png" alt="Current Player Chess Piece">
         </div>
-        <div class="player-turn-box">
-            <h2 id="status-label">STATUS</h2>
-        </div>
+
+
         <div class="chess-board">
             <table id="board"></table>
         </div>
+
+        <div class="player-turn-box">
+            <button onclick="gui.resetGame()" id="new-game-button">
+                <span class="material-symbols-outlined">
+                    refresh
+                </span>
+            </button>
+            <h5>Restart</h5>
+        </div>
+
 
 
     </div>

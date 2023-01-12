@@ -51,7 +51,7 @@ class GUIBoard {
         this.setEndSquare(null)
         this.setStartSquare(null)
         this.possible_moves = [];
-        this.board = game.getBoard()
+        // this.board = game.getBoard()
         this.html_board = new Array(BOARD_SIZE);
         for (let index = 0; index < this.html_board.length; index++) {
             this.html_board[index] = new Array(BOARD_SIZE);
@@ -124,7 +124,7 @@ class GUIBoard {
             this.updatePlayerTurnBox();
         }
         else if (this.getStartSquare() !== null) {
-            var potentialMoves = getPossibleMoves(this.board, this.getStartSquare().getX(), this.getStartSquare().getY())
+            var potentialMoves = getPossibleMoves(this.game.getBoard(), this.getStartSquare().getX(), this.getStartSquare().getY())
             if (potentialMoves.length === 0) {
                 this.setStartSquare(null)
             } else
@@ -153,7 +153,7 @@ class GUIBoard {
     constructGUIBoard() {
         var table = document.getElementById('board');
         table.innerHTML = ""
-        for (let y = 0; y < this.board.getSquares().length; y++) {
+        for (let y = 0; y < this.game.getBoard().getSquares().length; y++) {
             //Create a row in the table.
             var board_row_element = document.createElement('tr');
             table.appendChild(board_row_element);
@@ -172,7 +172,7 @@ class GUIBoard {
         var data_cell = document.createElement('td');
         var square = document.createElement('div');
 
-        let currentSquare = this.board.getSquare(x, y);
+        let currentSquare = this.game.getBoard().getSquare(x, y);
         if (currentSquare.isOffBoard()) {
             return;
         }
@@ -315,13 +315,22 @@ class GUIBoard {
 
     updateGameStatus(){
         
-        const label = document.getElementById('status-label')
+        const status_label = document.getElementById('status-label')
         var status = game.getStatus()
+        if(status === Game.active_status){
+            status = "";
+        }
         var newLabel = status;
-        console.log(newLabel)
-
-        label.textContent = newLabel
+        status_label.textContent = newLabel
     }
 
+
+    resetGame(){
+        console.warn("Resetting game")
+        this.game.resetGame()
+        this.constructGUIBoard();
+        this.updatePlayerTurnBox();
+        this.updateGameStatus()
+    }
     
 }

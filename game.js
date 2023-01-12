@@ -18,58 +18,81 @@ class Game {
     static BLACK_START_Y = 0;
 
 
+    isGameOver(){
+        return this.getStatus() === Game.stalemate_status || this.getStatus() === Game.checkmate_status
+    }
+
     getBoard() {
         return this.#board;
     }
 
+    //Current Turn
     currentTurn() {
         return this.#currentTurn
-    }
-
-    nextTurn() {
-        if (this.currentTurn() === this.players[0]) {
-            this.setCurrentTurn(this.players[1])
-        } else {
-            this.setCurrentTurn(this.players[0])
-        }
     }
 
     setCurrentTurn(player) {
         this.#currentTurn = player;
     }
 
+    //Set the next turn
+    nextTurn() {
+        this.setCurrentTurn(this.whoIsNext())
+    }
+    // Return who is the next turn
+    whoIsNext(){
+        if (this.currentTurn() === this.players[0]) {
+            return this.players[1]
+        } else {
+            return this.players[0]
+        }
+    }
 
+   
+
+    //Sets up the game
     initialise(player1, player2) {
+
         if (player1.getColour() === player2.getColour()) {
             console.error("Players cannot be matching colours");
         }
+        this.players = [];
         this.players.push(player1);
         this.players.push(player2);
 
-        if (player1.getColour() === WHITE) {
-            this.setCurrentTurn(player1)
-        } else {
-            this.setCurrentTurn(player2)
-        }
-        this.#board = new Board();
-        this.#board.cleanBoard();
-        this.#board.resetBoard()
-
-        this.movesPlayed = [];
-        this.setStatus(Game.active_status);
+        
+        this.resetGame()
 
     }
 
+    resetGame(){
+        this.#board = new Board();
+        this.#board.cleanBoard();
+        this.#board.resetBoard();
+        this.movesPlayed = [];
+        this.setStatus(Game.active_status);
+        if (this.players[0].getColour() === WHITE) {
+            this.setCurrentTurn(this.players[0])
+        } else {
+            this.setCurrentTurn(this.players[1])
+        }
+    }
 
+    // Refreshes and determines what status the game is in
     updateStatus() {
+        this.getBoard().getKingPosition(this.currentTurn().getColour()).getPiece().setInCheck(false);
 
         this.setStatus(Game.active_status)
         //Check if the current player's king is in check.
         if (this.getBoard().isKingInCheck(this.currentTurn().getColour())) {
             this.setStatus(Game.in_check_status)
+            this.getBoard().getKingPosition(this.currentTurn().getColour()).getPiece().setInCheck(true);
         }
         // Check if the move results in a stalemate (a draw).
         var stalemate = false;
+        if(this.isStalemate()){
+            this.setStatus(Game.stalemate_status)
+        }
         // Check if the move results in a checkmate (ending the game with a win for the checking player).
         var checkmate = false;
         if(this.getBoard().isCheckmate(this.currentTurn().getColour())){
@@ -93,9 +116,28 @@ class Game {
         // The game must not have been previously declared a draw by the threefold repetition rule
 
         // The game cannot have been previously declared a draw by the insufficient material rule
+        var current_king_only = this.#onlyHasKing(this.currentTurn().getColour());
+        var oppponent_king_only = this.#onlyHasKing(this.whoIsNext().getColour());
+        
         // - Find only 1 white king and 1 black king
+        if (current_king_only && oppponent_king_only){
+            return true;
+        } 
+
         // - 1 king, 1 king and bishop
+
         // - 1 king, 1 king and bishop
+        
+        
+        else{
+            false;
+        }
+    }
+
+    #onlyHasKing(player_colour){
+        // Only will work if the pieces on the board does not permit two kings.
+        var total_pieces = this.getBoard().getPlayerSquares(player_colour).length;
+        return total_pieces === 1;
     }
 
 
@@ -119,9 +161,11 @@ class Game {
 
     }
 
+
+    //Determines if the move about to be played is a castle
     isCastleMove(move){
+        //Checks if king is being moved
         if (!(move.pieceToMove().constructor === King)) {
-            console.warn("Not king selected.")
             return false;
         }
         return (!this.getBoard(this.currentTurn().getColour()) && !move.pieceToMove().hasCastled() && move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
@@ -129,7 +173,7 @@ class Game {
 
     //Plays the selected player's turn, if the move inputted is valid
     playTurn(player, start_X, start_Y, end_X, end_Y, promotion_piece) {
-        if(this.getStatus() === Game.checkmate_status){
+        if(this.isGameOver()){
             console.error("Game is over!")
             return false
         }
@@ -225,7 +269,6 @@ class Game {
              //Update status of game
              this.nextTurn()
              this.updateStatus()
-             //updateStatusFunction
              return true;
 
         }
@@ -245,21 +288,7 @@ class Game {
             return true;
         }
 
-        // Castle move
-
-
-        //Check if castle
-        // if (move.pieceToMove().constructor === King) {
-        //     if (!move.pieceToMove().hasCastled()) {
-        //         move.setIsCastle(true)
-        //         this.nextTurn()
-        //         this.movesPlayed.push(move);
-        //         return true
-        //     } else {
-        //         move.pieceToMove().playFirstMove()
-        //     }
-        // }
-        //kill piece
+        //Kill piece
         var destPiece = move.getEnd().getPiece();
         if (!move.getEnd().isVacant()) {
             destPiece.kill(true);

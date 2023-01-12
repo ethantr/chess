@@ -35,7 +35,7 @@ class Rook extends Piece {
                     var piece = square.getPiece()
                     console.warn(piece)
                     if (piece.getColour() === start.getPiece().getColour() || (x !== end_X && x !== start_X)) {
-                        console.warn("Horizontal path not clear.")
+                    
                         return false;
                     }
                 }
@@ -52,10 +52,9 @@ class Rook extends Piece {
             for (y; y < end_Y; y++) {
                 let square = board.getSquare(start.getX(), y)
                 if (!square.isVacant()) {
-                    console.warn(square)
+                
                     if (square.getPiece().getColour() === start.getPiece().getColour() || (y !== end_Y && y !== start_Y)) {
-                        console.warn("Matching colour",square.getPiece().getColour() === start.getPiece().getColour(), "Not complete path",y !== end_Y, y,end_Y)
-                        console.warn("Vertical path not clear.")
+                        
                         return false;
                     }
                 }
@@ -80,7 +79,6 @@ class Rook extends Piece {
         var y = getDistY(start, end);
 
         var canMove = x >= 1 && y === 0 || y >= 1 && x === 0
-        var path = this.isPathClear(board,start,end)
         
         return canMove && this.isPathClear(board,start,end);
     }

@@ -4,18 +4,14 @@ white = new Player(WHITE);
 game.initialise(black,white);
 gui = new GUIBoard(game)
 
-console.log(game.playTurn(white,0,6,0,4))
-game.playTurn(black,1,1,1,3)
-gui.constructGUIBoard()
 
 
-
+//Debug
 window.addEventListener("keydown", event => {
     if (event.key == "r") {
       gui.constructGUIBoard();
       console.log("refreshed board.")
-      var playerTurnElement = document.getElementsByClassName('player-turn');
-
+      game.updateStatus()
     }
   });
 
