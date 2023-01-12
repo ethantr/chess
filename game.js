@@ -82,7 +82,21 @@ class Game {
         this.#status = status;
     }
 
+    isStalemate() {
+        // Must have at least one legal move and not in check (no legal moves)
 
+        // The game must not have been previously declared a draw by the 50-move rule.
+
+        // The game must not have been previously declared a draw by the threefold repetition rule
+
+        // The game cannot have been previously declared a draw by the insufficient material rule
+        // - Find only 1 white king and 1 black king
+        // - 1 king, 1 king and bishop
+        // - 1 king, 1 king and bishop
+    }
+
+
+    //Checks if a move results in a pawn being promoted
     isPawnBeingPromoted(move) {
         //Check if pawn is actually being moved
         if (!(move.pieceToMove().constructor === Pawn)) {
@@ -102,6 +116,15 @@ class Game {
 
     }
 
+    isCastleMove(move){
+        if (!(move.pieceToMove().constructor === King)) {
+            console.warn("Not king selected.")
+            return false;
+        }
+        return (move.pieceToMove().canMoveSafe(this.getBoard(),move.getStart(),move.getEnd()))
+    }
+
+    //Plays the selected player's turn, if the move inputted is valid
     playTurn(player, start_X, start_Y, end_X, end_Y, promotion_piece) {
 
         var startSquare = this.getBoard().getSquare(start_X, start_Y);
@@ -111,19 +134,22 @@ class Game {
         return this.makeMove(move, player);
     }
 
+    
+    //Performs castle move.
     makeCastleMove(move) {
         const KING_MOVE_DISTANCE = 2;
         var king = move.getStart();
-        var rook = move.getEnd();
-        //check if move is a valid castle move
-        if (!move.pieceToMove().isValidCastle(this.getBoard(), king, rook)) {
-            console.error("Not a valid castle move.")
-            return false;
-        }
+        const ROOK_LEFT_START_X = 0;
+        const ROOK_RIGHT_START_X = BOARD_SIZE - 1;
+
+        //Get rook square
+        const rook_X = king.getX() > move.getEnd().getX() ? ROOK_LEFT_START_X : ROOK_RIGHT_START_X;
+        const rook = this.getBoard().getSquare(rook_X, move.getEnd().getY())
+
 
         //Set castled for rook and king.
-        move.pieceToMove().setCastled(true);
-        var rookPiece = move.getEnd().getPiece();
+        move.pieceToMove().playFirstMove();
+        var rookPiece = rook.getPiece();
         rookPiece.playFirstMove();
 
         //Clear original spaces in the board
@@ -145,7 +171,7 @@ class Game {
         return true;
     }
 
-
+    //Performs the move if the move is valid
     makeMove(move) {
         var player = move.getPlayer();
 
@@ -178,6 +204,27 @@ class Game {
             move.pieceToMove().playFirstMove()
         }
 
+
+        //Rook first Move
+        if (move.pieceToMove().constructor === Rook && !(move.pieceToMove().firstMovePlayed())) {
+            move.pieceToMove().playFirstMove()
+        }
+
+
+        //King first Move
+        if (this.isCastleMove(move)) {
+            this.makeCastleMove(move);
+            this.movesPlayed.push(move);
+             //Update status of game
+             this.nextTurn()
+             //updateStatusFunction
+             return true;
+
+        }
+        else if (move.pieceToMove().constructor === King && !(move.pieceToMove().firstMovePlayed())) {
+            move.pieceToMove().playFirstMove()
+        }
+
         //Pawn promotion move
         if (this.isPawnBeingPromoted(move)) {
             this.movesPlayed.push(move);
@@ -189,6 +236,9 @@ class Game {
             //updateStatusFunction
             return true;
         }
+
+        // Castle move
+
 
         //Check if castle
         // if (move.pieceToMove().constructor === King) {
@@ -210,12 +260,12 @@ class Game {
 
         // store the move
         this.movesPlayed.push(move);
-        console.warn("Board before:",this.getBoard())
-        console.warn("King should be at ", this.getBoard().getKingPosition(BLACK))
+        console.warn("Board before:", this.getBoard())
+        console.warn("King BLACK should be at ", this.getBoard().getKingPosition(BLACK))
         this.getBoard().placePiece(move.pieceToMove(), move.getEnd().getX(), move.getEnd().getY())
         this.getBoard().placePiece(PLACEHOLDER, move.getStart().getX(), move.getStart().getY())
-        console.warn("Board after:",this.getBoard())
-        console.warn("King NOW at ", this.getBoard().getKingPosition(BLACK))
+        console.warn("Board after:", this.getBoard())
+        console.warn("King BLACK NOW at ", this.getBoard().getKingPosition(BLACK))
 
         //Update status of game
         this.nextTurn()
