@@ -10,7 +10,6 @@ function getPossibleMoves(board,startX,startY) {
 
 
 function isKingInCheck(board,playerColour){
-    console.log("Checking if " + playerColour + " king is in check")
 
     //Find position of king
     var kingSquare = board.getKingPosition(playerColour)
@@ -41,9 +40,10 @@ function isKingInCheck(board,playerColour){
 function moveResultsInCheck(board,start,end){
     var playerColour = start.getPiece().getColour();
 
-    //Simulate board move
+    //Simulate board move - regular moves only
     var boardCopy = DeepCopyFactory.copyBoard(board);
-    boardCopy.placePiece(start.getPiece(), end.getX(), end.getY())
+    var pieceMovedCopy = DeepCopyFactory.copyPiece(start.getPiece())
+    boardCopy.placePiece(pieceMovedCopy, end.getX(), end.getY())
     boardCopy.placePiece(PLACEHOLDER, start.getX(), start.getY())
 
     return !isKingInCheck(boardCopy,playerColour);
@@ -92,10 +92,6 @@ class DeepCopyFactory{
         var pieceClass = piece.constructor;
         var pieceColor = piece.getColour();
 
-        //TO DO
-        var eliminated = null;
-        var firstMovePlayed = false;
-        
         
         var newPiece = new pieceClass(pieceColor)
         if(pieceClass === Pawn || pieceClass === Rook || pieceClass === King){

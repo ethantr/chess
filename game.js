@@ -85,7 +85,7 @@ class Game {
 
     isPawnBeingPromoted(move) {
         //Check if pawn is actually being moved
-        if (!move.pieceToMove().constructor === Pawn) {
+        if (!(move.pieceToMove().constructor === Pawn)) {
             return false;
         }
 
@@ -106,7 +106,7 @@ class Game {
 
         var startSquare = this.getBoard().getSquare(start_X, start_Y);
         var endSquare = this.getBoard().getSquare(end_X, end_Y)
-        console.warn("Chosen piece ", startSquare, "dest", endSquare)
+        console.warn("Chosen piece for playing turn", startSquare, "dest", endSquare)
         var move = new Move(player, startSquare, endSquare, promotion_piece);
         return this.makeMove(move, player);
     }
@@ -191,16 +191,16 @@ class Game {
         }
 
         //Check if castle
-        if (move.pieceToMove().constructor === King && this.makeCastleMove(move)) {
-            if (!move.pieceToMove().hasCastled()) {
-                move.setIsCastle(true)
-                this.nextTurn()
-                this.movesPlayed.push(move);
-                return true
-            } else {
-                move.pieceToMove().playFirstMove()
-            }
-        }
+        // if (move.pieceToMove().constructor === King) {
+        //     if (!move.pieceToMove().hasCastled()) {
+        //         move.setIsCastle(true)
+        //         this.nextTurn()
+        //         this.movesPlayed.push(move);
+        //         return true
+        //     } else {
+        //         move.pieceToMove().playFirstMove()
+        //     }
+        // }
         //kill piece
         var destPiece = move.getEnd().getPiece();
         if (!move.getEnd().isVacant()) {
@@ -210,9 +210,12 @@ class Game {
 
         // store the move
         this.movesPlayed.push(move);
+        console.warn("Board before:",this.getBoard())
+        console.warn("King should be at ", this.getBoard().getKingPosition(BLACK))
         this.getBoard().placePiece(move.pieceToMove(), move.getEnd().getX(), move.getEnd().getY())
         this.getBoard().placePiece(PLACEHOLDER, move.getStart().getX(), move.getStart().getY())
-
+        console.warn("Board after:",this.getBoard())
+        console.warn("King NOW at ", this.getBoard().getKingPosition(BLACK))
 
         //Update status of game
         this.nextTurn()

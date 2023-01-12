@@ -114,6 +114,7 @@ class GUIBoard {
             } else {
                 this.game.playTurn(this.game.currentTurn(), this.getStartSquare().getX(), this.getStartSquare().getY(), this.getEndSquare().getX(), this.getEndSquare().getY())
             }
+            this.updatePlayedMoveBox()
             this.setStartSquare(null)
             this.setEndSquare(null)
             this.constructGUIBoard();
@@ -307,5 +308,19 @@ class GUIBoard {
         this.updatePlayerTurnBox();
         this.removePawnPromotionBox();
     }
+
+
+    updatePlayedMoveBox(){
+        
+        const label = document.getElementById('piece-move-label')
+        var pieceMoved = getPieceName(this.getStartSquare().getPiece())
+        var endSquareX = this.getEndSquare().getX()
+        var endSquareY = this.getEndSquare().getY()
+        var newLabel = pieceMoved + " moved to " + endSquareX +", "+endSquareY
+        console.log(newLabel)
+
+        label.textContent = newLabel
+    }
+
     
 }

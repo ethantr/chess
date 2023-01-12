@@ -5,11 +5,12 @@ class Queen extends Piece {
     }
 
     canMove(board, start, end) {
-
+        //if positions are off the board
         if (start.isOffBoard() || end.isOffBoard()) {
             return false;
         }
-
+        
+        //Check if 
         if (!end.isVacant() && this.isSameTeam(end.getPiece())) {
             return false;
         }
@@ -36,8 +37,8 @@ class Queen extends Piece {
                 let square = board.getSquare(x, start.getY())
                 if (!square.isVacant()) {
                     var piece = square.getPiece()
-                    console.warn(piece)
-                    if (piece.getColour() === start.getPiece().getColour() || (x !== end_X && x !== start_X)) {
+                    //If piece found is not at the end of the path or is the same colour
+                    if (start.getPiece().isSameTeam(piece)|| (x !== end_X && x !== start_X)) {
                         console.warn("Horizontal path not clear.")
                         return false;
                     }
@@ -55,10 +56,8 @@ class Queen extends Piece {
             for (y; y < end_Y; y++) {
                 let square = board.getSquare(start.getX(), y)
                 if (!square.isVacant()) {
-                    console.warn(square)
-                    if (square.getPiece().getColour() === start.getPiece().getColour() || (y !== end_Y && y !== start_Y)) {
-                        console.warn("Matching colour",square.getPiece().getColour() === start.getPiece().getColour(), "Not complete path",y !== end_Y, y,end_Y)
-                        console.warn("Vertical path not clear.")
+                    if (start.getPiece().isSameTeam(square.getPiece()) || (y !== end_Y && y !== start_Y)) {
+                        // console.warn("Vertical path not clear.")
                         return false;
                     }
                 }

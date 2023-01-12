@@ -9,7 +9,7 @@ class Square {
         this.setY(y)
         this.setX(x)
     }
-
+    
     isOffBoard(){
         return this.getX() >= BOARD_SIZE || this.getX() < 0 || this.getY() < 0 || this.getY() >= BOARD_SIZE
     }
